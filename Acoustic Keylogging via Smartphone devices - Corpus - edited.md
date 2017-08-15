@@ -80,7 +80,7 @@
    * Simple comparison
    * Supervised and unsupervised learning
      * Mean approximation 
-     * K-means clustering
+     * Kmeans clustering
    * ​
 
 9. **Development process**
@@ -103,7 +103,7 @@
      * Feature Analysis
      * Supervised/Unsupervised Learning
        * Mean approximation
-       * K-means clustering
+       * Kmeans clustering
          * 1 dimensional
          * 2 dimensional
      * Storing results
@@ -125,7 +125,7 @@
     * Initial results
     * Using sophisticated feature extraction
     * Mean approximation
-    * K-means clustering
+    * Kmeans clustering
     * Cryptographic substitution frequency analysis
 
 ---
@@ -142,27 +142,29 @@ The author of this corpus is Daniel Jack Andrews, if you have any queries you ca
 
 #### 1.2.1 Abstract
 
-Almost every human in the First World owns a smartphone. These modern day devices often contain technology more powerful and sophisticated than the rockets that delivered man to the moon.
+<span class="highlight"> Almost every human in the First World owns a smartphone. These modern day devices often contain technology more powerful and sophisticated than the rockets that delivered man to the moon. </span>
 
 Considering this, the potential power behind the average smartphone is huge, even for the purpose of breaking security measures. Computer keyboards are not a new invention and have been rooted to the development of computers since their creation; however they are fundamentally at the hand of every and all sensitive data entry. Sensitive data could reflect bank details, passwords, personal or confidential information and more. 
 
-The dissertation that this corpus supports aims to challenge whether a modern day smartphone can acoustically eavesdrop on a keyboard through side-channels in the sound produced by pressing the keys on the board.
+The dissertation that this corpus supports aims to challenge whether a modern day smartphone can acoustically eavesdrop on a keyboard through side-channels in the <span class="highlight">sound</span> produced by pressing the keys on the board.
 
 #### 1.2.2 Aim
 
-This corpus aims to provide and support the dissertation associated with it such that any reference of relation to the material, results or development of the dissertations logic, applicants or findings can be backed up and catalogued. This corpus will briefly cover certain aspects of the project and the details can be found in the body of the dissertation. Instead this corpus aims to provide a uniformed catalogue of data used as referencing points in the dissertation thesis itself. <span class="highlight"> last 2 sentences seem to be repeating each other? </span>
+This corpus aims to provide and support the dissertation associated with it such that any <span class="highlight">reference of relation to the material, results or development of the dissertations logic, applicants or findings can be backed up and catalogued.</span> This corpus will <span class="highlight">briefly</span> cover certain aspects of the project and the details can be found in the <span class="highlight">body</span> of the dissertation. Instead this corpus aims to provide a uniformed catalogue of data used as referencing points in the dissertation thesis itself. <span class="highlight"> last 2 sentences seem to be repeating each other? </span>
 
 ### 1.3 Special Thanks
 
 This project could not have been completed without the following people and groups who have provided wonderful guidance and support throughout the project.
 
-* Budi Arief - Supervisor, Computer Security Lecturer.
+<span class="highlight">I have captialised their titles </span>
+
+* Budi Arief - Supervisor, <span class="highlight">Computer Security Lecturer.</span>
   * Met with me regularly to conduct guidance meetings and help keep me on track of the topic at hand, always firm and willing to provide assistance when needed.
   * Founded the project concept and passed it onto me.
 * Samuel Williams - PhD candidate, Programming Language Implementation specialist.
   * Provided fantastic knowledge on artificial intelligence and had a deep appreciation for the research topic covered in this material.
 * Alice Mo - Data Mining Analyst and MSc Candidate at University College London
-  * Fundamentally showed and helped deal with resolving data to identify useful traits and patterns.
+  * <span class="highlight">Fundamentally showed and helped deal with resolving data to identify useful traits and patterns. </span>
 * Michael Berry - PhD, Software Engineer, Electronics Tinkerer and Radio Licence Holder.
   * Provided assistance on digital signal processing, explaining Fourier transforms and utilising feature extraction.
 * The Shed - Group of knowledgeable technicians with a wealth background experience in varying fields.
@@ -194,11 +196,11 @@ Discussed hardware capabilities, such as whether the phone being used has multip
 
 Discussed controlled environment settings:
 
-- Specific keyboard to use, in this case mechanical keyboard model "Razer BlackWidow 2014 Ultimate" - using Razer's patterned mechanical keys.
+- Specific keyboard to use, in this case mechanical keyboard model "Razer BlackWidow 2014 Ultimate" - using <span class="highlight">Razer's</span> patterned mechanical keys.
 - Specific to Android OS only for the purpose of the research
 - 20 presses of specific keys, 'Q', 'W', etc.
 - Lasercut potential frame to hold keyboard and phone, ensure that the distance between them is always fixed and therefore stops variations in this.
-- Decided to use my Android phone to undertake this project.
+- <span class="highlight">Decided to use my Android phone to undertake this project.</span>
 - Keys such as space will be hard to identify due to their size and potential to be struck in varying places.
 
 Other items to note:
@@ -231,7 +233,7 @@ Other items to note:
 
 ##### 28/2/2017 - Initial Attempt at Isolating Raw Data
 
-Initially this was a demoralising iteration, I found that the accelerometer was slow within the Android SDK and that I would not reliably be able to identify or determine key presses given such little ranging values over a sample, such that I decided for the time being to focus solely on acoustic keylogging rather than other features. 
+Initially this was a demoralising iteration, I found that the accelerometer was slow within the Android SDK and that I would not <span class="highlight">reliably</span> be able to identify or determine key presses given such little ranging values over a sample, such that I decided for the time being to focus solely on acoustic keylogging rather <span class="highlight">than<span> other features. 
 
 Decided to go back to the 'drawing' board and look at research more thoroughly, other assessments had gotten in my way and little work had been made through this iteration.
 
@@ -281,7 +283,7 @@ Another lost audio recording for this meeting.
 
 I had successfully written a feature extraction algorithm that was able to identify distinct differences in frequency and magnitude between two key presses, albeit there were complications with live audio recording as to be expected.
 
-The next focus on was on refining this feature extraction if possible and looking into a primitive machine learning algorithm to help classify and train the keys being pressed. In this case the focus was on a supervised algorithm.
+The next focus on was on refining this feature extraction if possible and looking into a primitive machine learning algorithm to help classify and train the keys being pressed. In this case the <span class="highlight">focus was on</span> a supervised algorithm.
 
 ##### 21/7/2017 
 
@@ -309,11 +311,11 @@ This meeting was a final conclusive meeting of the project coming to an end. I s
 
 * Feature extraction
 * Mean average supervised learning
-* K-means unsupervised learning
+* <span class="highlight">K-means</span> unsupervised learning
 * Saving results
 * Identifying keystrokes based on results
 
-The results of k-means clustering were more accurate than mean average. K-means scored around ~60% while mean average scored around ~52%. At this point the focus was on writing the corpus and working towards the dissertation. 
+<span class="highlight">The results </span>of <span class="highlight">k-means</span> clustering were more accurate than mean average<span class="highlight">. K-means</span> scored around ~60% while mean average scored around ~52%. At this point the focus was on writing the corpus and working towards the dissertation. 
 
 **Note** - A final meeting is planned for the 29/8/2017 but since the Corpus will have been submitted it will not be documented, this meeting aims to provide details and feedback on the state of the dissertation.
 

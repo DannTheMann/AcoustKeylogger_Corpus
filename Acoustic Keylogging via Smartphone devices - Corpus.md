@@ -22,10 +22,10 @@
 
 3. **Previous Research**
 
-   * Keystroke Dynamics
-   * Audio Feature Extraction
-   * Keyboard Acoustics
-   * Audio Visual Extraction
+   * Accelerometer Side Channel Attacks
+   * Cracking Passwords using keyboard acoustics and language modelling
+   * Keyboard Acoustic Emanations
+   * Keyboard Acoustic Emanations Revisited
    * ​
 
 4. **Hardware**
@@ -168,7 +168,7 @@ This project could not have been completed without the following people and grou
 
 ### 2.1 Purpose
 
-Every fortnight I met my supervisor Budi Arief to discuss the project undertaken. These meetings were intended to provide insight into the current status of the project while assisting in any issues and providing other forms of support to the project.
+On several occasions I met my supervisor Budi Arief to discuss the project undertaken. These meetings were intended to provide insight into the current status of the project while assisting in any issues and providing other forms of support to the project.
 
 ### 2.2 Audio recordings
 
@@ -176,7 +176,7 @@ Unfortunately I have only three audio recorded sessions as my audio recording eq
 
 * 15/5/2017 (In person) - [View](meetings_audio/15.05.m4a)
 * 21/7/2017 (In person) - [View](meetings_audio/21.07.m4a)
-* 14/8/2017 (On Skype) - [View](https://archain.org)
+* 14/8/2017 (On Skype) - [View](https://youtu.be/rXuJJ0NG7Ys)
 
 In-between June and August I lost two of my recordings. 
 
@@ -281,13 +281,82 @@ The next focus on was on refining this feature extraction if possible and lookin
 
 [Audio](meetings_audio/21.07.m4a)
 
+A setback  occurred where my AudioRecord API ceased to operate and instead started spurring errors, after fixing these owing to updated Android API permission system the project was back on track.
 
+Discussed the possibility of focussing on multiple keyboards but for the time being decided to look at just one keyboard until later period. Talked about storing the data and dealing with Androids file system in a manner that can be adjusted accordingly if need be. Java offers serialisation, a useful mechanism of preserving the data encapsulated within an object at runtime; potential for this tool to be used. Preserving data comes in the form of being able to then use this as a measurement of comparison for later, i.e I'm able to identify the key C because I have told my program from training that key C sounds like this.
 
+Decided that the phone should handle everything, previously there was a thought of potentially having a machine elsewhere decode the live audio into information but instead the confirmation of the phone being the sole processing machine was decided. Rationality for this was user ability, if anyone owns a phone then they also can do what this project aims for.
 
+Discussed potentially having a visual display of characters being decoded as an end goal, however for this to be effective it would require that the device was able to quickly identify as many keys as possible as well as having a high degree of accuracy in doing so.
 
+Talked breifly about Mel-cepstrum Frequency Analysis, a technique often used in voice recognition systems although this methodology was too foreign to be adopted. 
 
+Finished up with discussing the corpus and dissertation display and layout, decided to use markdown and provide the corpus in a HTML relative structure.
 
+##### 14/8/2017 (On Skype) 
 
+[Audio](https://youtu.be/rXuJJ0NG7Ys) - Provided on YouTube, otherwise it's 1.4GB.
+
+**Note** - The previous 3 weeks consisted of back and forth between me and Budi, trying to arrange a meeting as both of us were unavailable at several periods. 
+
+This meeting was a final conclusive meeting of the project coming to an end. I spent time explaining the working system for the keylogger as well as providing details on several anecdotes regarding the system. Details included:
+
+* Feature extraction
+* Mean average supervised learning
+* Kmeans unsupervised learning
+* Saving results
+* Identifying keystrokes based on results
+
+The he results of kmeans clustering were more accurate than mean average, kmeans scored around ~60% while mean average scored around ~52%. At this point the focus was on writing the corpus and working towards the dissertation. 
+
+**Note** - A final meeting is planned for the 29/8/2017 but since the Corpus will have been submitted it will not be documented, this meeting aims to provide details and feedback on the state of the dissertation.
+
+---
+
+## 3. Research
+
+### 3.1 Accelerometer Side Channel Attacks
+
+[Paper](research/AccelerometerSideChannel.pdf)
+
+Using the accelerometer on Android based smartphones to determine a users phone pin/pattern unlocking code. Research in this field shows that success rates in controlled environments are high (such as the user sitting down being motionless) whereas in uncontrolled environments rates dropped but still maintained a concerning high level of accuracy.
+
+They provided relevant research from others in the field in similar veins of collecting data, previous papers referenced in this include:
+
+- [TouchLogger](research/TouchLogger.pdf): Inferring Keystrokes On Touch Screen From Smartphone Motion
+- [TapPrints](research/TapPrints.pdf): Your Finger Taps Have Fingerprints - focuses on a similar vein of research as the source but utilises gyroscopic and accelerometer data to infer key presses.
+
+The paper makes reference to different MAXIMUM sample rates of certain phones and through my own research I've found a piece of [software](https://github.com/dantasse/AccelerometerTest/) capable of measuring the speed of a phones accelerometer which will be useful later in my own research.
+
+They used multiple phones to correlate their findings with varying refresh rates. Collected 5 samples of each pin/pattern entry but before this had each tester enter 50 random pins/patterns with their dominant hand then following this doing the same but walking around.
+
+- The controlled data (Sitting) was used for training.
+- The variable data (Walking) was used for testing.
+- Utilising multiple mathematical formula to try to classify the data in a meaningful manner.
+  - Mean Normalisation, Linear Normalisation, Quadratic Normalisation
+  - iFFT-Poly, iFFT-Acc and 3D-Polynominal graphing
+
+Utilising these formula they found a large **variance** between values, even when entering the same pin and such that they needed to **normalise** the raw signal. They used a 1-dimensional Discrete Fourier Transform with a resolution of 35 samples and found that the larger sample set would add to much variance while a smaller sample set would not preserve enough information.
+
+The paper talks in detail about using Hidden Markov Models to predict unknown pins due to the limitations of having a classifier that only knows the patterns given by users.
+
+They then suggest potential solutions to the problem presented:
+
+- Vet programs that use sensors, try to identify any malicious behaviour or intent. Scale is too hard for this.
+- Restrict sampling rate, but as the paper demonstrates even at 20KHz still possible to monitor fairly accurately.
+- Utilise a permission model warning users about the permissions given to an app, mostly ignored by the user anyway.
+
+Their suggested solution is:
+
+- Disable the sensors whenever a trust related action is being performed, such as entering a password. Current security models do not allow for this, but future proofing may be required.
+
+**Conclusion**
+
+Conclusively the paper ends by explaining that a side-channel attack is possible and potentially dangerous even with noise introduced, drawing parallels between itself and other papers in the field it makes use to explain how one could expand upon the research. 
+
+However this research focuses on inferring data from then touchscreen and does not guarantee that the same can be used for keystrokes on a physical keyboard. (As it later turns out, this is the true that Android is too limited to be able to deduce another features alone from vibrations for keystroke analysis)
+
+###3.2  
 
 
 

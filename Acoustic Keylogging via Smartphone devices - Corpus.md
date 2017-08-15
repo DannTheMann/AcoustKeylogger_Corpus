@@ -32,7 +32,7 @@
    * Cracking Passwords using keyboard acoustics and language modelling
    * Keyboard Acoustic Emanations
    * Keyboard Acoustic Emanations Revisited
-   * ​
+   * Electronic emanations of wired and wireless keyboards
 
 4. **Hardware**
 
@@ -182,7 +182,7 @@ Unfortunately I have only three audio recorded sessions as my audio recording eq
 
 * 15/5/2017 (In person) - [View](meetings_audio/15.05.m4a)
 * 21/7/2017 (In person) - [View](meetings_audio/21.07.m4a)
-* 14/8/2017 (On Skype) - [View](https://youtu.be/rXuJJ0NG7Ys)
+* 14/8/2017 (On Skype) - [View](https://youtu.be/ac2mPSi0TXU)
 
 In-between June and August I lost two of my recordings. 
 
@@ -248,7 +248,6 @@ A lot of this time was spent working on assessments, exams and job interviews. E
 * Cracking Passwords using keyboard Acoustics and Language Modeling - Andrew Kelly (2010)
 * Keyboard Acoustic Emanations - Asonov and Agrawal (2004)
 * Keyboard Acoustic Emanations Revisited - Zhang, Feng, Tygar (2009)
-* Electronic emanations of wired and wireless keyboards - Vuagnoux and Pasini (2009)
 
 ##### 15/06/2017 - Pre deliverable submission
 
@@ -273,7 +272,7 @@ We focused on three main elements of the project after research:
 
 ##### 6/07/2017 - Implementation progress update
 
-Unfortunately I lost the recording for this meeting but I did however make some notes on the topics mentioned. The focus of the meeting was applying a Fourier transform across a discrete dataset of values for analysis in the frequency domain. Such that we could later pass this into a feature extraction function that would return us distinct features of keypresses.
+Unfortunately I lost the recording for this meeting but I did however make some notes on the topics mentioned. The focus of the meeting was applying a Fourier transform across a discrete dataset of values for analysis in the frequency domain. Such that we could later pass this into a feature extraction function that would return us distinct features of keystrokes.
 
 ##### 12/07/2017 - Implementation progress update
 
@@ -295,13 +294,13 @@ Decided that the phone should handle everything, previously there was a thought 
 
 Discussed potentially having a visual display of characters being decoded as an end goal, however for this to be effective it would require that the device was able to quickly identify as many keys as possible as well as having a high degree of accuracy in doing so.
 
-Talked breifly about Mel-cepstrum Frequency Analysis, a technique often used in voice recognition systems although this methodology was too foreign to be adopted. 
+Talked briefly about Mel-cepstrum Frequency Analysis, a technique often used in voice recognition systems although this methodology was too foreign to be adopted. 
 
 Finished up with discussing the corpus and dissertation display and layout, decided to use markdown and provide the corpus in a HTML relative structure.
 
 ##### 14/8/2017 (On Skype) 
 
-[Audio](https://youtu.be/rXuJJ0NG7Ys) - Provided on YouTube, otherwise it's 1.4GB.
+[Audio](https://youtu.be/ac2mPSi0TXU) - Provided on YouTube, otherwise it's 1.4GB.
 
 **Note** - The previous 3 weeks consisted of back and forth between me and Budi, trying to arrange a meeting as both of us were unavailable at several periods. 
 
@@ -362,9 +361,69 @@ Conclusively the paper ends by explaining that a side-channel attack is possible
 
 However this research focuses on inferring data from then touchscreen and does not guarantee that the same can be used for keystrokes on a physical keyboard. (As it later turns out, this is the true that Android is too limited to be able to deduce another features alone from vibrations for keystroke analysis)
 
-###3.2  
+###3.2 Keyboard Acoustic Emanations 
 
+[Paper](research/KeyboardAcousticEmanations.pdf)
 
+Written in 2004 the original paper addresses the ability to identify with a high degree of accuracy keystrokes from emanations created from sound via side-channel attacks. Asonov and Agrawal provide a detailed understanding of the attack, how it works, why it works and methods to potentially disable or weaken the attack.
 
+The paper expands by explaining that they recorded 2-3ms worth of the ’touch-peak’ in which they are able to extract reliable features from the sample given. That initially they tested keys ’l’ and ’k’ individually 100
+times and then fed the results as a key-value pair into an neural network. The neural network was then able to identify each key press of ’l’ and ’k’ with a given 100% accuracy, however this initial experiment was at a
+performance of 1 metre with a microphone that may potentially exceed the capabilities of the Samsung S4s microphone. Later they experimented with variable distances and background noise with just keys ’l’ and ’k’ to challenge the accuracy of the neural network; with a distance of up to 15 metres. They reported no changes in their results given this knowledge.
 
+Later they extended their keyset to 30 keys and noted the accuracy of given keys to the network, even expanding into the realm of utilising a separate keyboard. They found a given accuracy of 79% out of 300 ’test’ clicks.
 
+They acknowledge that in the tests provided so far, the same user provided input onto the keys, such that they had trained a network in the users biometric attitude towards the keyboard. They found that given
+a change in person and approach to impact pressure applied to each key that their neural network resulted in poor behaviour.
+
+Their work expands into other touch-based input systems such as telephones, ATMs and more - however this escapes beyond the realm of our research. Finally they suggest a mechanism to counter this attack vector, using silent keyboards such as non-mechanical however they note the price and lack of
+comfort these provide to users.
+
+**Conclusion**
+
+The most detailed aspect of this research is the 'touch-peak' of 2-3ms and training data, they utilise important methods that can be followed up on for my work. I plan to follow a similar pattern of testing two individual keys, then 5, then a range of keys. 
+
+### 3.3 Keyboard Acoustic Emanations Revisited
+
+[Paper](research/KeyboardAcousticEmanationsRevisited.pdf)
+
+In 2009 Zhang, Feng and Tygar of the University of California produced a paper that expanded upon Asonov and Agrawals in the hope to address the inefficiency of their neural network. In their paper they report a success of identifying up to 96% accuracy when disregarding a new for training label data within a 10 minute period of sound recording. They announce the success of a 90% accuracy within 5 character random password identification with only the use of letters in fewer than 20 attempts by the adversary, leading to %80 accuracy within 75 attempts at 10 character random passwords.
+
+They incorporate the use of the constraints applied by the English language and as such utilise a dictionary to help identify potentially invalid words and replace them with the most likely correct alternative.
+
+They quickly address the previous flaws laid out by Asonov and Agrawals paper in which labelled training data is required for learning and given the same environmental variables are in play, variables in key impact
+pressure lead to a severe failure within the previous paper.
+
+The paper regards a superior technique over FFT for feature extraction and training of the neural network by utilising cepstrum features which details higher than FFT. Interestingly they admit that they are not aware whether the victim may be writing in English but instead address this by saying that given the accuracy of their results it would become apparent whether the user was writing in English or not given a few attacks.
+
+They use clustering to help apply a class to each keystroke to a key but admit that it is potentially unreliable and as such much seed it randomly to avoid obvious overlap. A HMM (Hidden Markov Model) is used to correctly identify typical positioning of characters and likelihood of positioning given the English language, an example being ’h’ coming after ’t’ to form ’th’. Afterwards utilising a speller and grammar checking system to fill in any potentially unknown variables within words. Finally they apply this to a feedback trainer
+which helps the classifier to identify potential random text at a later for password recognition. They only utilise words that had less than 1/4 of their components correct to help train the classifier and with this are able to identify the quality of the classifier; more feedback equals better quality as less mistakes have been made in the classification program.
+
+**Conclusion**
+
+The big push in this research is the use of Mel-cepstrum over FFT, although this technique is superior at analysis it is far more complex and could potentially be beyond my capabilities but is worth noting in detail. FFT is an easy technique to implement while Mel-cepstrum has been notably used in voice recognition software. They utilise clustering (see later on kmeans clustering) to classify keystrokes but describe this technique as 'standard clustering methods' (later research explains more detail kmeans clustering).
+
+### 3.4 Cracking Passwords using keyboard acoustics and language modelling
+
+[Paper](research/crackingpasswords.pdf)
+
+One very substantial prior research piece is that of Andrew Kellys similar exploration into acoustic keylogging by building of the previous research of Asonov and Agrawal in 2004. The piece written in 2010 demonstrates extensive understanding of techniques provided by Asonov and Agrawal while expanding upon them to deliver a clear depth of expansive knowledge. Kelly provides an overview of different stages utilised in the
+project with each stage isolating requirements for the project as a hole. Kelly explains the use of a ’press-peak’ for analysing the acoustic features from a keystroke which is compromised of two separate components a touch-peak and hit-peak; the touch-peak providing a further detailed analysis for digital
+sound signalling.
+
+![kae](research/images/kae.png)
+
+Kelly explains the use of Asonovs and Agrawals neural networks for classifying keystrokes which resulted in a 79% success rate, this attack vector required labelled training data and suffered from variations in
+accuracy with the pressure applied to each keystroke. Later Kelly mentions the expansion of this attack vector provided by Zhang, Zhou and Tygar in 2009, in which they utilised an unsupervised clusters of keystrokes - feeding these into unigram and bigram statistics to map clusters to the correct keys and later
+applying a language model and dictionary for spell checking to then feed into a supervised classifier with the correct text. Kelly notes that Zhang, Zhou and Tygar found that utilising cepstrum feature extraction
+over FFT (Fast Fourier Transform) yielded a much higher accuracy. By using a spell checker with a dictionary they were able to train their classifier and provide more accurate results when analysing keystrokes.
+
+The paper explains that keystrokes often fall within the frequency range of 400-12000Hz, although Kelly does not explain whether the keyboards used are membrame or mechanical, in the case of our project - it’s a mechanical keyboard.
+
+**Conclusion**
+
+Overall I have provided a small subset of Kellys early analysis in his paper but the important details like in his use of feature extraction via FFT and Mel-cepstrum frequency analysis. The use of kmeans clustering over supervised learning is an interesting concept but I hope to implement both to verify these findings myself as machine learning is not a concept I am personally too familiar with.
+
+## 4. Hardware
+
+...

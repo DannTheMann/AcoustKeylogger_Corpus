@@ -51,6 +51,7 @@
      * Phone model
      * Location of phone
      * Keyboard 
+     * Impact strength & location
 
 6. **Testing methodology**
 
@@ -208,9 +209,8 @@ Other items to note:
 - Use keys that are of varying sizes and distances away from one another to help for identification, keys mention included:
   - Q
   - ENTER
-  - SLASH
-  - W
-  - H
+  - O
+  - LEFT-CONTROL
   - SPACE
 - Investigate potentially new technologies
 - Research into feature extraction to further develop an understanding of the topic material
@@ -572,9 +572,95 @@ When you press a key on a keyboard you may vary the strength and location of you
 
 The impact strength itself will be controlled as best as plausible in the testing environment, in the real world this strength may vary based on user, keyboard, attitude and much more. 
 
+## 6. Testing methodology
 
+### 6.1 Initial testing plans
 
+As shown in the meetings with Budi, the plans for testing came from first analysing the individual keys and recording them without any analysis to purely identify any trends between them. All tests started initially with 5 keys, these keys being:
 
+ * Q, SPACE, LEFT-CONTROL, O, ENTER
+
+Each key is strategically located at different points on the keyboard offering varying size and range from the smartphone. We agreed that I would press each key 20 times and record the results for comparison later on. Later we would extend the character set beyond this.
+
+### 6.2 Testing process
+
+Analysing these key presses without any software on the phone became very tricky, my software struggled to produce data that could provide meaningful interpretation beyond what was already known.
+
+![Enter](testing_methods/Enter.PNG)
+
+​                                                           Analysing the 'ENTER' key in more detail.
+
+As shown in the image above, actually identifying what each key was doing became tricky as the microphone was not sophisticated enough to identify what was previously established in Kellys research. This led to awkward problems with analysing data and feature extraction techniques although later down the line this was dealt with. 
+
+Below is a video of my first set of samples, after these initial sets of samples were gathered I moved onto using my own application to gather the data itself. Below is a list of the initial audio recordings:
+
+* [Enter](testing_audio/init_test/Enter.m4a)
+* [Left Control](testing_audio/init_test/Lctrl.m4a)
+* [O](testing_audio/init_test/O.m4a)
+* [Q](testing_audio/init_test/Q.m4a)
+* [Space (center press)](testing_audio/init_test/Space-center.m4a)
+
+Here is the video demonstrating my recordings which shows the process I followed for each key sampling session.
+
+<iframe style="margin: auto;" width="720" height="480" src="https://youtu.be/kB9nhHsFQ-w">
+</iframe>
+
+Throughout later stages I trained my program by following an almost identical setup although owing to the GUI designed in my system I was able to tell the application when to sample and when not to; as to void potential background noise. Later I extended the subset of keys to all 26 English characters in the alphabet.
+
+When developing the application I initially only tested two keys, Enter and Space as to make certain that my feature extraction was able to clearly identify the two different keys. This was done as previous researchers had acted similarly by first measuring two distinct keys and making certain their system worked.
+
+#### Small subset
+
+The small subset consisted of:
+
+* Q
+* O
+* SPACE
+* LEFT CONTROL
+* ENTER
+
+And was used for testing early implementations of the device. It would take time to retrain the system so training all keys would be pointless to then retrain them again after a small update. In incredibly early implementations only two keys were used for training to garner enough knowledge about the capabilities of the implemented feature extraction techniques. These keys were:
+
+* SPACE
+* ENTER
+
+#### Large subset
+
+The large subset consisted of:
+
+- Q
+- W
+- E
+- R
+- T
+- Y
+- U
+- I
+- O
+- P
+- A
+- S
+- D
+- F
+- H
+- J
+- K
+- L
+- Z
+- X
+- C
+- V
+- B
+- N
+- M
+- SPACE
+- LEFT CONTROL
+- ENTER
+- BACKSPACE
+- NUMPAD ENTER
+- TAB
+
+Again not every key was mapped but in the final rendition all of the keys above were mapped and trained against. The results for these findings can be found in the results section of the paper.
 
 
 

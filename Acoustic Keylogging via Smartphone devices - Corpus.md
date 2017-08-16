@@ -116,11 +116,11 @@
 
 10. **Results**
 
-    * Initial results
-    * Using sophisticated feature extraction
-    * Mean approximation
-    * Kmeans clustering
-    * Cryptographic substitution frequency analysis
+   * Initial results
+   * Using sophisticated feature extraction
+   * Mean approximation
+   * Kmeans clustering
+   * Cryptographic substitution frequency analysis
 
 ---
 
@@ -276,7 +276,7 @@ I had successfully written a feature extraction algorithm that was able to ident
 
 The next focus on was on refining this feature extraction if possible and looking into a primitive machine learning algorithm to help classify and train the keys being pressed. In this case the focus being on a supervised algorithm.
 
-##### 21/7/2017 
+##### 21/7/2017 - Testing methodologies 
 
 [Audio](meetings_audio/21.07.m4a)
 
@@ -292,7 +292,7 @@ Talked briefly about Mel-cepstrum Frequency Analysis, a technique often used in 
 
 Finished up with discussing the corpus and dissertation display and layout, decided to use markdown and provide the corpus in a HTML relative structure.
 
-##### 14/8/2017 (On Skype) 
+##### 14/8/2017 (On Skype) - Evaluation of Android Application 
 
 [Audio](https://youtu.be/ac2mPSi0TXU) - Provided on YouTube, otherwise it's 1.4GB.
 
@@ -420,4 +420,94 @@ Overall I have provided a small subset of Kellys early analysis in his paper but
 
 ## 4. Hardware
 
-...
+### 4.1 Smartphone Technology
+
+In previous research in this field all microphone technology has been provided by professional recording equipment designed to be precise and offer accurate findings. In the case of my research we are using an off the shelf device that can be used by any user from any background with smartphones. Therefore my precision can potentially be poorer than previous research as the focus is on being as far from specific as possible. 
+
+There are several operating systems used on smartphones ranging from Apples 'iOS' to Googles 'Android' and lesser popular operating systems such as Windows mobile and Linux hacked phones. 
+
+While technology has pushed smartphones further than before and shall carry on doing so it's important the note that my findings are limited to this hardware and technology. Android is supported across multiple phones and API variations of the operating system with many different companies utilising and modifying it to give their users a precise design. As Android is supported and incorporated on more mobile devices than any other mobile operating system it seems the smart choice to try and reflect the worlds habits on smartphones. The phone in particular being used is the Samsung Galaxy S4, a flagship model from 2013. Old enough to no longer be prevalent with the S5, 6 & 7 models super seceding it but young enough to still be fully fleshed out and capable of handling our task. If the project works on this phone, it'll work on nearly all phones after it owing to legacy development.
+
+![s4](hardware/s4.jpg)
+
+​                                                                            (Samsung Galaxy S4)
+
+At later stages I attempted to use a Samsung S6 Edge in place of the S4 but found that little changed in the results leading me to believe that the technology in the microphones was not overwhelmingly different.
+
+![s6](J:\University\University\MSc\Project\Final\Corpus\hardware\s6.jpg)
+
+​                                                                         (Samsung Galaxy S6 Edge)
+
+#### Microphone
+
+The important aspect of the phone itself is the Microphone with the focus of the hardware being on it's capabilities. Now unsurprisingly Samsung do not provide the specifications of the microphone that other manufactures will, normally we can expect a datasheet reflecting the quality of the microphone but in this case nothing is present. The model of phone is referred to the Samsung I9505 Galaxy S4 only provides minimal specifications on what the phone is capable of doing; such as wireless (WiFi) specifications.
+
+Instead I opted to use a spectral frequency analyser and some code to identify the frequency spectrum that the S4 could sample at. We can assume that the phone samples human speech and that if humans can hear between a range of 20Hz-20KHz then the phone must be able to sample this correctly.
+
+Assuming such that the highest range is 20KHz then we can use Nyquists theorem to determine that the highest safest sampling rate that will cause no audio loss is 2 times that, hence 40KHz, standard sampling rates around this value include 44.1KHz and 48KHz.
+
+We can prove this further by demonstrating using a spectral analyser that the phone is able to identify frequency responses from upwards of 20KHz.
+
+![spectro](hardware/spectro.png)
+
+Therefore I knew that the phones microphone should be more than capable of identifying the keystrokes of the keyboard. However the accuracy may not be as high as more omnidirectional and precise microphones.
+
+### 4.2 The Android Operating System
+
+As mentioned prior this operating system designed by Google is found on more smartphones than any other operating system. Not all phones run the same versions with many running older versions rather than the newest versions. Vendors will often tailor Android for their users in the case of Samsung providing or closing certain features behind their security or providing enhanced features such as 'Samsung Pay'. 
+
+![android](hardware/android.png)
+
+​                                           (Image courtesy of [Wikipedia](https://en.wikipedia.org/wiki/Android_version_history))
+
+
+
+* Samsung Galaxy S4 runs Lollipop (Android 5.0.1)
+* Samsung Galaxy S6 Edge run Nougat (Android 7.0)
+
+So by testing both these devices with the developed application we can sweep around 40% of all Android operating systems and in-between those too (between Android 5.x - 7.x).
+
+#### Android Java
+
+Android uses 'java' as it's primary programming interaction. Although it does not use the JVM (Java virtual machine) or bytecode like normal Java applications instead opting for it's own 'Dalvik' machine and bytecode. It provides the same interaction that Java does and is synonymously known as Java but it's not entirely the same working principle. Although for the purpose of this project, it won't make much difference in the long run.
+
+### 4.3 Keyboard Hardware
+
+In this project I have decided to utilise a mechanical keyboard over a typical membrane keyboard. Mechanical keyboards are louder and well structured internally compared to membrane and while this may seem like a trade off in terms of the attack vector - it's a controlled lab environment with a focus on pure identification and analysis to begin with.
+
+The keyboard itself is the Razor Black Widow Ultimate 2014 Edition mechanical keyboard and while that name sounds intense it's a gaming keyboard with backlit elements and macro keys. It's designed to be powerful and loud which makes it ideal for analysis. 
+
+![keyboard](/hardware/keyboard.jpg)
+
+​                                                  (Razor Black Widow Ultimate 2014 Edition Keyboard)
+
+Another keyboard is present but this one is a simple membrane keyboard and exists for purely for varying testing conditions.
+
+## 5. Testing conditions
+
+### 5.1 Constraints
+
+The testing behind the project follows tight constraints in order to control the environment and tests as much as possible. Some elements are almost impossible to guarantee identical values for while others can be controlled fairly easily. Below are the list of constraints and variables that testing suffered from. 
+
+For the **methodology** behind the testing see testing methodology, section 6. 
+
+#### 5.1.1 Keyboard
+
+###### 5.1.1.1 Location
+
+The location of the keyboard is as relevant as the location of the phone, both need to remain identical throughout all testing and cannot be subject to change else the values and training data provided to the application will be invalid. By keeping the keyboard in the same location each time in proportion to the phone we guarantee that our testing will not be impacted by variations in distance. 
+
+![frame_keyboard](/testing_conditions/frame_keyboard.JPG)
+
+
+
+
+
+
+
+
+
+
+
+
+

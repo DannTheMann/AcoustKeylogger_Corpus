@@ -493,11 +493,86 @@ For the **methodology** behind the testing see testing methodology, section 6.
 
 #### 5.1.1 Keyboard
 
+As mentioned prior the keyboard used in this work was a Razor Black Widow Ultimate 2014 Edition Keyboard, a mechanical gaming keyboard with macro keys. Designed for multi-purpose scenarios. 
+
 ###### 5.1.1.1 Location
 
 The location of the keyboard is as relevant as the location of the phone, both need to remain identical throughout all testing and cannot be subject to change else the values and training data provided to the application will be invalid. By keeping the keyboard in the same location each time in proportion to the phone we guarantee that our testing will not be impacted by variations in distance. 
 
+Using a laser cut frame from wood I was able to fix the location of the keyboard at all times as with the location of the smartphone. For more information on the wooden frame see section **5.1.3**.
+
 ![frame_keyboard](/testing_conditions/frame_keyboard.JPG)
+
+###### 5.1.1.2 Membrane vs Mechanical
+
+I choose the black widow keyboard owing to it's mechanical nature and prominent feature set. There are multiple mechanical keyboards on the market but for me this keyboard was distinct and easily available being my personal keyboard of choice. Although prior research had investigated the differences they too felt that mechanical keyboards were a step in the right direction. The important detail for acoustic keylogging is that mechanical keyboards are often much louder, although this can vary based on the switches used - in the case of the Razor model used it's a custom bespoke switching system.
+
+For distinct differences in membrane versus mechanical see the diagram below.
+
+![mechvsmem](/testing_conditions/mechvsmem.png)
+
+​                                        (Mechanical left, Membrane right. Image from [prohavit.com](https://www.prohavit.com/blog/membrane-keyboard-vs-mechanical-keyboard/))
+
+As can be seen, mechanical hits the backplate fierce and hard whereas membrane is a soft flexible impact and may vary on the noise given.
+
+##### 5.1.2 Smartphone
+
+As mentioned prior the smartphone used was the Samsung Galaxy S4 primarily with second-hand testing on an S6 Edge. 
+
+###### 5.1.2.1 Operating System
+
+Albeit the operating system used in this case fairly universal and as such is not so much a constraint as a benefit. However it must be said that the operating system used was Android and not another, even then versions 5.0.1 (Lollipop) and 7.0 (Nougat).
+
+###### 5.1.2.2 Microphone
+
+The placement and positioning on the phone(s) is important for microphone usage in this project. For example while the S6 Edge and S4 may look very similar their microphone placements are different. Firstly both phones have dual microphones and offer one on the top and bottom faces of the device, however the S4 and S6 mirror each other with placement such that the S4s bottom microphone is on the left hand portion of the face while the S6s microphone is on the right hand side. As mentioned in the hardware section that the technology of the microphone can vary on the how well data can be sampled, this is a constant provided by the phone model itself but later models may use more sophisticated microphone technology.
+
+When testing I had to be cautious with the wooden frame not to obstruct the microphones.
+
+![frame_phone](testing_conditions/frame_phone.JPG)
+
+* Samsung S4 sitting in frame, notice slots next to the bottom and/or top of the device to provide space                  for the microphones.
+* The phone can be positioned in 8 different locations for testing purposes.               
+
+##### 5.1.3 Lab conditions
+
+The area in which I recorded all of my samples and results. Initially I recorded some samples in Canterbury and then when I moved back home for the final months of my MSc I recorded the remaining samples there. I live very close to Gatwick airport on a remote farm under the flight path so one of my main considerations was avoiding noise pollution from outbound and inbound aircraft. 
+
+The lab itself was my living room as this was the most isolated and quietest part of my house and I recorded on top of a metal plate to avoid creaking of a wooden table. 
+
+I created a wooden frame to fix the locations of the smartphone and the keyboard as seen in previous images of this section. The frame itself was designed in the shed to match the measurements of the Samsung S4 as well as the Razor keyboard. It was intended to provide modularity in the fixed position by allowing up to 8 different positions for the smartphone to be fixed in; all centring around the keyboard. While providing space for both microphones on the phone. 
+
+![frame_empty](testing_conditions/frame_empty.JPG)
+
+​                                              The frame with neither keyboard or smartphone present.
+
+### 5.2 Variables
+
+Throughout the testing their are variables that exceed my control, these variables may influence the outcome of the results of testing and are mentioned below.
+
+#### 5.2.1 Background noise
+
+As mentioned I live next to Gatwick and even before then I lived with 5 other students. Background noise from aircraft, farm animals, people, floorboards creaking etc are all likely to disturb the accuracy of the tests. I attempted to minimize the effects of this by only recording at dormant times (Where little people are around) and in-between aircrafts landing and taking off. You can see in my testing recordings that I actually pause before proceeding to training more data as to avoid specifically aircraft interference. 
+
+#### 5.2.2 Phone model
+
+While the phone model in my project is fixed it's important to note that this is a variable in the real world and may not reflect all potential outcomes of the real world under similar testing procedures. I did utilise 2 different makes of Samsung smartphones to try and demonstrate this but other manufactures or entirely different phones in general may be impacted by these testing conditions.
+
+#### 5.2.3 Location of phone
+
+The phone can change it's location as mentioned prior about the frame although this variable is more of a constant set where there are only 8 potential locations for the phone to be, however depending on the location it is more than likely to change the values associated with the results.
+
+#### 5.2.4 Keyboard
+
+While in the constants of this testing I will be using the Razor mechanical keyboard, in the real world the keyboard being monitored may be of varying size or style. It's important to note that this sampling keylogger will only be trained to this specific keyboard and holds no promises on it's capability of identifying keys from other keyboards.
+
+#### 5.2.5 Impact strength & location
+
+When you press a key on a keyboard you may vary the strength and location of your finger as it makes contact with the key. This is important as location is mostly fixed thanks to the wooden frame but given the impact zone may infer different values based on the location of the impact. For example, when we look at the letters 'Q' and 'W' they are situated next to one another, a slight impact to the top-left corner of 'W' may sound like a 'Q'. 
+
+The impact strength itself will be controlled as best as plausible in the testing environment, in the real world this strength may vary based on user, keyboard, attitude and much more. 
+
+
 
 
 

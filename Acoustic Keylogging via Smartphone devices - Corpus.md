@@ -662,6 +662,142 @@ The large subset consisted of:
 
 Again not every key was mapped but in the final rendition all of the keys above were mapped and trained against. The results for these findings can be found in the results section of the paper.
 
+## 7. Feature Extraction
+
+### 7.1 Features
+
+Features can consist of any characteristic that defines a key. In the case of the project, the common features used to identify key strokes are:
+
+* Amplitude
+* Frequency
+* Magnitude
+
+Where possible other characteristics can be used.
+
+#### 7.1.1 Amplitude
+
+Amplitude itself is a value of a single period taken from a measurement of sound in this case. It defines the literal amplitude of the noise. Amplitude itself can have multiple measurements worth extracting for the purpose of feature analysis and in the case of the application I measure what is know as the peak amplitude; the maximum amplitude of a discrete set of amplitude values associated with an audio sample.
+
+Amplitude measurements in the Android operating system from audio can vary from negative to positive and represent the elements of a sinewave over a period of time. In the case of the program we are sampling at 44,100 Hz per second and therefore have a set of 44,100 amplitude values associated to that second. 
+
+#### 7.1.2 Frequency
+
+Audio frequency is audible to humans and is a measurement of periodic vibration of a sample of audio. It is measured in Hertz and determines pitch of noise. Frequency is commonly used in audio analysis to identify traits behind a sample and in the case of the application used to characterise our keys. It's important to note that keys pressed on the keyboard generate frequency between 4,000 and 12,000Hz; audible frequency for humans is between 20-20,000Hz. 
+
+A Fourier transform is used on a sequence of 'raw' audio samples to produce a map of the frequency domain, this domain can then be parsed to identify frequency traits in an audio sample. 
+
+In the case of the application, I was interested in prominent frequencies (The resonating frequency) and it's associated magnitude. Both of which can be used to identify peaks and trends in key presses.
+
+### 7.2 Pre-recorded audio extraction
+
+All previous research focused on pre-recorded analysis, often working on the same data over the entire period. Some research utilised 10 minute recordings and worked on analysing them more critically over time while others only focused on small segments of 10 characters and identifying SSH passwords. All this research used custom computers and hardware to identify and accurately build upon datasets. In the case of my project is was limited to the smartphone at hand and the data had to be analysed then and there.
+
+### 7.3 Live audio extraction
+
+I decided to focus on live audio extraction as previously all forms of research had utilised pre-recorded analysis. Not only would live-analysis be more difficult but would also provide an element that hasn't been investigated yet. Live audio analysis without a doubt showed inconsistencies compared to pre-recorded and its accuracy severely dropped although this could owe to the smartphone at hand as opposed to a custom machine performing post analysis.
+
+### 7.4 Isolating peaks
+
+The microphone API on the Android platform provided the potential for the programmer to engage the microphone to record at set sampling ranges to specific buffers. However the limitations of such came at the cost of how sampling occurred. 
+
+The Android API limited the analysis of live audio by only allowing the user to store the last N values in a buffer to be analysed such that you could record as much as you wanted but could only analyse so much. Due to sampling rate being 44,100 Hz I decided to buffer an array of size 44,100Hz matching the sampling frequency such that I measured the entire second in it's full scope. This entire second could then be subsampled by isolating the peaks between key presses made in that singular second. 
+
+#### 7.5 Subsampling
+
+First I had to isolate each peak and subsample it. By identifying the highest amplitude in a sample iteratively and then subsampling that index by negative N indices and positive N indices I was able to subsample multiple key presses in one second. 
+
+Once isolated and subsampled I then fed these individual subsamples into my feature analysis network, in this case it was either a supervised or unsupervised training network. 
+
+## 8. Feature Analysis
+
+### 8.1 Simple comparison
+
+Initially I tried performing a simple comparison, storing a relative frequency to each key and identifying whether the isolated subsamples prominent frequency matched the relative frequency. This was poorly defined and provided very little accuracy often mistaking keys for completely irrelevant or unbelievably different keys all together.
+
+### 8.2 Supervised and unsupervised learning
+
+Two forms of machine learning were applied to this project both supervised and unsupervised. 
+
+#### 8.2.1 Mean approximation
+
+This was a general supervised machine learning object-orientated approach and was cocktail of averages and value appreciation. By taking the prominent frequency of each key press and when training feeding it into this algorithm I was able to tally the combined value of prominent frequencies reflecting a key and then divide by my total samples to give a mean approximation. This value allowed for consistent cross-checking and worked fairly well to begin with although fell apart when background noise was introduced as only one value was associated to each key and it's probable outcome. This led to inconsistencies in datasets when a lot of key presses were made in a singular second and the variables mentioned in Testing conditions sections played out. 
+
+In a controlled environment where nothing was impacting the circumstances at hand this performed fairly well with an accuracy of around ~52. See the results section for more details.
+
+#### 8.2.2 K-means clustering
+
+## 9. Development process
+
+### 9.1 Development process ideology
+
+#### 9.1.1 Iterative design
+
+#### 9.1.2 Version control
+
+#### 9.1.3 IDE (Integrated Development Environment)
+
+### 9.2 Program Steps
+
+#### 9.2.1 Initial Setup
+
+##### 9.2.1.1 Launch
+
+##### 9.2.1.2 GUI building
+
+#####9.2.1.3 Dataset loading
+
+##### 9.2.1.4 Thread establishment
+
+#### 9.2.2 Feature Extraction
+
+#### 9.2.3 Feature Analysis
+
+#### 9.2.4 Supervised and unsupervised learning
+
+##### 9.2.4.1 Mean approximation
+
+##### 9.2.4.2 K-means clustering
+
+#### 9.2.5 Storing results
+
+### 9.3 Android API
+
+#### 9.3.1 API Permissions
+
+#### 9.3.2 AudioRecord
+
+#### 9.3.3 Thread management
+
+#### 9.3.4 XML Design layouts
+
+### 9.4 Storage facilities
+
+#### 9.4.1 Internal and external storage
+
+#### 9.4.2 Serialisation
+
+#### 9.4.3 Exporting and importing datasets
+
+### 9.5 GUI functionality
+
+#### 9.5.1 Buttons
+
+#### 9.5.2 Visualising
+
+## 10. Results
+
+### 10.1 Initial Results
+
+### 10.2 Using sophisticated feature extraction
+
+### 10.3 Mean approximation
+
+### 10.4 K-means clustering
+
+###10.5 Cryptographic substitution frequency analysis
+
+
+
 
 
 

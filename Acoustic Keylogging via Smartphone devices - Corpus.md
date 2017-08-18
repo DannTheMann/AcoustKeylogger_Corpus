@@ -117,11 +117,11 @@
 
 10. **Results**
 
-   * Initial results
-   * Using sophisticated feature extraction
-   * Mean approximation
-   * Kmeans clustering
-   * Cryptographic substitution frequency analysis
+  * Initial results
+  * Using sophisticated feature extraction
+  * Mean approximation
+  * Kmeans clustering
+  * Cryptographic substitution frequency analysis
 
 ---
 
@@ -722,29 +722,235 @@ Two forms of machine learning were applied to this project both supervised and u
 
 This was a general supervised machine learning object-orientated approach and was cocktail of averages and value appreciation. By taking the prominent frequency of each key press and when training feeding it into this algorithm I was able to tally the combined value of prominent frequencies reflecting a key and then divide by my total samples to give a mean approximation. This value allowed for consistent cross-checking and worked fairly well to begin with although fell apart when background noise was introduced as only one value was associated to each key and it's probable outcome. This led to inconsistencies in datasets when a lot of key presses were made in a singular second and the variables mentioned in Testing conditions sections played out. 
 
-In a controlled environment where nothing was impacting the circumstances at hand this performed fairly well with an accuracy of around ~52. See the results section for more details.
+In a controlled environment where nothing was impacting the circumstances at hand this performed fairly well with an accuracy of around ~52%. See the results section for more details.
 
 #### 8.2.2 K-means clustering
 
+Previous researchers used K-means clustering as an unsupervised method of categorising their keystrokes from feature analysis. The unsupervised machine learning technique revolves around the value of **K** which is a defined number of clusters that is provided by the programmer and then parsing a series of datasets (normally onto a 2d plane) iteratively until they are completely categorised into their respective clusters. This requires the use of **centroids** which act as the central point for each cluster. Each centroid is updated at the end of an iteration to reflect the concentration of the surrounding data around it.
+
+It yielded more effective results than supervised mean approximation but was more complicated and complex, leading to less efficiency. Effectively the application would extract features from each key press such as frequency, magnitude etc and then apply this to the K-means implementation such that it can iterate again over the dataset and cluster that value. Clustered values would be associated to keys on the keyboard.
+
 ## 9. Development process
 
-### 9.1 Development process ideology
+### 9.1 Development process methodology
 
 #### 9.1.1 Iterative design
 
+I partially followed an iterative design approach by adding components of the application piece by piece and building off each version previously. The initial focus was on applying feature extraction to gather reasonable estimations of features from audio, then expanding this to look into working with training and finally analysing.
+
 #### 9.1.2 Version control
+
+I utilised version control systems such as git to maintain my project, my first application was developed in February and completely rewritten as it fell short of a structured application, it was more a getting to grips with Android Studio and working with audio sampling. By the beginning of summer I had completely redesigned and created a new application from scratch with followed programming styles and conditions more closely.
 
 #### 9.1.3 IDE (Integrated Development Environment)
 
+For the project Android Studio was used to develop and maintain the application while using an emulator for some minor details such as verifying output data whereas for the majority of testing a real phone was attached to the computer and interacted directly with the IDE. Emulation does not cover well with audio sampling and this would train from my actual desktop microphone rather than my smartphones microphone which would lead to poor evaluation of results.
+
 ### 9.2 Program Steps
+
+Below is a detailed explanation of the programs functionality listing out the functions utilised and behaviour expected.
 
 #### 9.2.1 Initial Setup
 
+Activities exist in Android applications, these activates range based on what the task of the application is. In the case of my program it's focus was on background cataloguing and not per say Google maps; therefore I utilised a 'blank activity'.
+
+All activities extend from the 'AppCompatActivity' which allows a class that extends this class to override two important functions.
+
+* **onCreate** - Called on the application start up
+* **onStop** - Called when the application terminates
+
+```Java
+public class MainActivity extends AppCompatActivity {
+ 
+  @Override
+  public void onCreate(){...}
+  
+  @Override
+  public void onStop(){...}
+  
+}
+```
+
+For the focus of this application onCreate is far more utilised than onStop which acts merely as mechanism to gracefully stop the program by saving files and such.
+
+A series of predefined constants are provided in the MainActivity class. 
+
+```Java
+    private SoundMeter soundMeter; // Handler for managing sampling of sound
+    private Thread smRun; // Thread to control the SoundMeter
+    private KeyHandler keyHandler; // Data to handle learning of the keys
+    // ------------------
+    /* END SENSOR COMP */
+    // ------------------
+
+    // --------------
+    /* UI ELEMENTS */
+    // --------------
+    private Spinner spinner; // Displays all keyboard keys
+
+    /* ID selections */
+    private final int CHARACTER_SELECTION_ID = R.id.characterSelection;
+    private final int CURRENT_CHARACTER_SELECTED = R.id.charSelectText;
+    private final int TRAINER_MODE_BUTTON = R.id.trainerMode;
+    private final int SAMPLING_BUTTON = R.id.samplingButton;
+    private final int PROGRESS_SOUND_VOLUME = R.id.progress;
+    private final int PROGRESS_RESULT = R.id.progressResult;
+    private final int CLEAR_ALL = R.id.clearAll;
+    private final int CLEAR_CURRENT_CHAR = R.id.clearCurrent;
+    private final int READ_ALL = R.id.readAll;
+    private final int READ_CURRENT_CHAR = R.id.readCurrent;
+    private final int SAVE_ALL = R.id.save;
+    private final int KMEANS_CLEAR = R.id.kmeansClear;
+    // ------------------
+    /* END UI ELEMENTS */
+    // ------------------
+
+    private static boolean sampling = false; // whether mic is sampling
+    private static boolean training = false; // training mode active
+    public static boolean isSampling() { return sampling; }
+    public static boolean isTraining() { return training; }
+
+    private static final String CHARACTER_SELECTED_TEXT = "Selected Character - ";
+```
+
+All of the above is designed to provide ease of use and documentation to the application. 
+
 ##### 9.2.1.1 Launch
+
+Below is a snippet of code that is called when the application initially starts. 
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    keyHandler = new KeyHandler(getFilesDir().getAbsolutePath());
+    soundMeter = new SoundMeter();
+    spinner = (Spinner) findViewById(CHARACTER_SELECTION_ID);
+
+   /* Add alphabet characters to the spinner, or the characters we define as our alphabet */
+    inputCharactersFromAlphabet();
+
+    /* Set character select text */
+    ((TextView)findViewById(CURRENT_CHARACTER_SELECTED)).setText(CHARACTER_SELECTED_TEXT + keyHandler.getActiveKey());
+
+    /* Add listeners to buttons on the UI */
+    addButtonListeners();
+
+    /* Will update the UI based on the sound meters finding */
+    UpdateProgress up = new UpdateProgress(soundMeter, spinner.getSelectedItem().toString());
+    smRun = new Thread(up);
+    smRun.start();
+
+    sampling = true;
+    System.out.println("Startup finished.");
+
+}
+```
+As can be seen the progress of what occurs in startup loosely abstracted is:
+
+* The main GUI window is attached to the layout of the application activity.
+* The KeyHandler is loaded from internal memory, or created if need be.
+* The sound management handler and GUI spinner are created.
+* All characters from the KeyHandlers training information are loaded and applied to the spinner.
+* The spinner is updated with relevant text for the default key that will be trained.
+* All buttons have been added via the XML activity file will have their associated listeners attached. The IDs present in snippet shown before this subsection are used to manage the varying buttons.
+* Finally a thread is created and spawned from a private internal class for managing the sound sampling and subsampling. 
 
 ##### 9.2.1.2 GUI building
 
+The GUI building is handled internally by Androids API but is managed through an internal GUI builder or alternatively an XML activity design file.
+
+![guibuild](development/guibuild.PNG)
+
+​                                  Android Studio GUI builder, left text view (XML), right display view.
+
+Each intractable object in the view has settings that can be modified for various benefits. These can either be done via the XML file or the GUI builder.
+
+![guibuild_2](development/guibuild_2.PNG)
+
+​                                      Settings on the right hand side can be used to modify the objects.
+
+In the above example we can see the **"ID"** which is used in identifying this GUI component in the main program, specifically in the case of the **save** button it's located in the initial setup phase of the application.
+
+```Java
+private final int SAVE_ALL = R.id.save;
+```
+
+Using this it's then possible to interact with the component as such:
+
+```Java
+Button saveButton = (Button) findViewById(SAVE);
+saveButton.doSomething();
+```
+
+For more information on this application design on the buttons themselves see the **development section - buttons**.
+
 #####9.2.1.3 Dataset loading
+
+In **onCreate** a specific instruction loads all of the training data.
+
+```Java
+keyHandler = new KeyHandler(getFilesDir().getAbsolutePath());
+```
+
+Simply put this will do two things:
+
+* Try to load the data if it exists.
+* If not then create a new fresh set of blank data for each key being trained.
+
+The KeyHandler class provides access to more than saving and loading of datasets but for loading datasets it utilises **serialisation** in Java to safely preserve the state of the keys training data objects. To quote Oracles [website](https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html) regarding Java object serialisation.
+
+> To *serialize* an object means to convert its state to a byte stream so that the byte stream can be reverted back into a copy of the object.
+
+It's a useful technique in handling object orientated data. Each key has an object storing it's training data and the entire object is preserved and then restored when the application launches again. The KeyHandler has a constant fixed array determining the active keys in use. This can vary to help training and only loading data relevant at the time of use.
+
+```Java
+private static final String[] keySamples = {"ENTER", "SPACE", "LEFT-CONTROL", "Q", "O"};
+```
+
+In this example, a smaller subset has been used to handle only the loading and managing of these keys. The actual loading component of restoring the object appears as so:
+
+```Java
+    private KeySample loadKeySample(String key) throws Exception{
+
+        KeySample sample = null;
+        final String file = DIRECTORY + File.separator + key + "-" + VERSION + ".ser";
+
+        // If the file does not exist then we create a new object and return it
+        if(!new File(file).exists()){
+            System.err.format("File did not exist for this key ('%s'), creating one.\n", key);
+            return new KeySample(key);
+        }
+
+        // A few things could go wrong, so we play safe
+        try {
+            FileInputStream fileIn = new FileInputStream(file);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            sample = (KeySample) in.readObject();
+            // Close data streams
+            in.close();
+            fileIn.close();
+            // Return restored object
+            return sample;
+        }catch(IOException i) {
+            i.printStackTrace();
+            throw new IOException("Failed to deserialize the KeySample - '" + key + "'.");
+        }catch(ClassNotFoundException c) {
+            System.err.println("KeySample class not found");
+            c.printStackTrace();
+            throw new ClassNotFoundException("Failed to deserialize the KeyHandler.");
+        }
+
+    }
+```
+
+Java provides a helpful API for handling all interactions with serializable objects, the only requirement for an class to produce serialized objects is to **implement serializable**. 
+
+```Java
+public class Foo implements Serializable { ... }
+```
 
 ##### 9.2.1.4 Thread establishment
 

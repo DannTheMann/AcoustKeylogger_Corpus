@@ -382,34 +382,31 @@ The most detailed aspect of this research is the 'touch-peak' of 2-3ms and train
 
 [Paper](research/KeyboardAcousticEmanationsRevisited.pdf)
 
-In 2009 Zhang, Feng and Tygar of the University of California produced a paper that expanded upon Asonov and Agrawals in the hope to address the inefficiency of their neural network. In their paper they report a success of identifying up to 96% accuracy when disregarding a new for training label data within a 10 minute period of sound recording. They announce the success of a 90% accuracy within 5 character random password identification with only the use of letters in fewer than 20 attempts by the adversary, leading to %80 accuracy within 75 attempts at 10 character random passwords.
+In 2009 Zhang, Feng and Tygar of the University of California produced a paper that expanded upon Asonov and Agrawals in the hope to address the inefficiency of their neural network. In their paper they report a success of identifying up to 96% accuracy when disregarding a new <span class="highlight">for training label data within a 10 minute period of sound recording. </span> They announce that the success rate of a 5 character random password identification with only the use of letters in fewer than 20 attempts was 90% by the adversary, leading to 80% accuracy within 75 attempts at 10 character random passwords.
 
 They incorporate the use of the constraints applied by the English language and as such utilise a dictionary to help identify potentially invalid words and replace them with the most likely correct alternative.
 
-They quickly address the previous flaws laid out by Asonov and Agrawals paper in which labelled training data is required for learning and given the same environmental variables are in play, variables in key impact
-pressure lead to a severe failure within the previous paper.
+They quickly address the previous flaws laid out by Asonov and Agrawal's paper in which labelled training data is required for learning and given the same environmental variables are in play, variables in key impact pressure lead to a severe failure within the previous paper.
 
 The paper regards a superior technique over FFT for feature extraction and training of the neural network by utilising cepstrum features which details higher than FFT. Interestingly they admit that they are not aware whether the victim may be writing in English but instead address this by saying that given the accuracy of their results it would become apparent whether the user was writing in English or not given a few attacks.
 
-They use clustering to help apply a class to each keystroke to a key but admit that it is potentially unreliable and as such much seed it randomly to avoid obvious overlap. A HMM (Hidden Markov Model) is used to correctly identify typical positioning of characters and likelihood of positioning given the English language, an example being ’h’ coming after ’t’ to form ’th’. Afterwards utilising a speller and grammar checking system to fill in any potentially unknown variables within words. Finally they apply this to a feedback trainer
-which helps the classifier to identify potential random text at a later for password recognition. They only utilise words that had less than 1/4 of their components correct to help train the classifier and with this are able to identify the quality of the classifier; more feedback equals better quality as less mistakes have been made in the classification program.
+They use clustering to help apply a class to each keystroke to a key but admit that it is potentially unreliable and as such much seed it randomly to avoid obvious overlap. A HMM (Hidden Markov Model) is used to correctly identify typical positioning of characters and likelihood of positioning given the English language: an example being ’h’ coming after ’t’ to form ’th’. Afterwards utilising a speller and grammar checking system to fill in any potentially unknown variables within words. Finally they apply this to a feedback trainer which helps the classifier to identify potential random text <span class="highlight">at a later </span>for password recognition. They only utilise words that had less than 1/4 of their components correct to help train the classifier and with this are able to identify the quality of the classifier; more feedback equals better quality as less mistakes have been made in the classification program.
 
 **Conclusion**
 
-The big push in this research is the use of Mel-cepstrum over FFT, although this technique is superior at analysis it is far more complex and could potentially be beyond my capabilities but is worth noting in detail. FFT is an easy technique to implement while Mel-cepstrum has been notably used in voice recognition software. They utilise clustering (see later on kmeans clustering) to classify keystrokes but describe this technique as 'standard clustering methods' (later research explains more detail kmeans clustering).
+The big push in this research is the use of Mel-cepstrum over FFT, although this technique is superior at analysis it is far more complex and could potentially be beyond my capabilities but is worth noting in detail. FFT is an easy technique to implement while Mel-cepstrum has been notably used in voice recognition software. They utilise clustering (see later on k-means clustering) to classify keystrokes but describe this technique as 'standard clustering methods' (later research explains more detail k-means clustering).
 
 ### 3.4 Cracking Passwords using keyboard acoustics and language modelling
 
 [Paper](research/crackingpasswords.pdf)
 
-One very substantial prior research piece is that of Andrew Kellys similar exploration into acoustic keylogging by building of the previous research of Asonov and Agrawal in 2004. The piece written in 2010 demonstrates extensive understanding of techniques provided by Asonov and Agrawal while expanding upon them to deliver a clear depth of expansive knowledge. Kelly provides an overview of different stages utilised in the
-project with each stage isolating requirements for the project as a hole. Kelly explains the use of a ’press-peak’ for analysing the acoustic features from a keystroke which is compromised of two separate components a touch-peak and hit-peak; the touch-peak providing a further detailed analysis for digital
+One very substantial prior research piece is that of Andrew Kelly's similar exploration into acoustic keylogging by building on the previous research of Asonov and Agrawal in 2004. The piece written in 2010 demonstrates extensive understanding of techniques provided by Asonov and Agrawal while expanding upon them to deliver a clear depth of expansive knowledge. Kelly provides an overview of different stages utilised in the project with each stage isolating requirements for the project as a whole. Kelly explains the use of a ’press-peak’ for analysing the acoustic features from a keystroke which is compromised of two separate components: a touch-peak and hit-peak. The touch-peak provides a further detailed analysis for digital
 sound signalling.
 
 ![kae](research/images/kae.png)
 
-Kelly explains the use of Asonovs and Agrawals neural networks for classifying keystrokes which resulted in a 79% success rate, this attack vector required labelled training data and suffered from variations in
-accuracy with the pressure applied to each keystroke. Later Kelly mentions the expansion of this attack vector provided by Zhang, Zhou and Tygar in 2009, in which they utilised an unsupervised clusters of keystrokes - feeding these into unigram and bigram statistics to map clusters to the correct keys and later
+Kelly explains the use of Asonov's and Agrawal's neural networks for classifying keystrokes which resulted in a 79% success rate, this attack vector required labelled training data and suffered from variations in
+accuracy with the pressure applied to each keystroke. Later Kelly mentions the expansion of this attack vector provided by Zhang, Zhou and Tygar in 2009, in which they utilised unsupervised clusters of keystrokes - feeding these into unigram and bigram statistics to map clusters to the correct keys and later
 applying a language model and dictionary for spell checking to then feed into a supervised classifier with the correct text. Kelly notes that Zhang, Zhou and Tygar found that utilising cepstrum feature extraction
 over FFT (Fast Fourier Transform) yielded a much higher accuracy. By using a spell checker with a dictionary they were able to train their classifier and provide more accurate results when analysing keystrokes.
 
@@ -417,17 +414,17 @@ The paper explains that keystrokes often fall within the frequency range of 400-
 
 **Conclusion**
 
-Overall I have provided a small subset of Kellys early analysis in his paper but the important details like in his use of feature extraction via FFT and Mel-cepstrum frequency analysis. The use of kmeans clustering over supervised learning is an interesting concept but I hope to implement both to verify these findings myself as machine learning is not a concept I am personally too familiar with.
+Overall I have provided a small subset of Kelly's early analysis in his paper but the important details are his use of feature extraction via FFT and Mel-cepstrum frequency analysis. The use of k-means clustering over supervised learning is an interesting concept but I hope to implement both to verify these findings myself as machine learning is not a concept I am personally too familiar with.
 
 ## 4. Hardware
 
 ### 4.1 Smartphone Technology
 
-In previous research in this field all microphone technology has been provided by professional recording equipment designed to be precise and offer accurate findings. In the case of my research we are using an off the shelf device that can be used by any user from any background with smartphones. Therefore my precision can potentially be poorer than previous research as the focus is on being as far from specific as possible. 
+In previous research in this field, all microphone technology have been provided by professional recording equipment designed to be precise and offer accurate findings. In the case of my research we are using an off the shelf device that can be used by any user from any background with smartphones. Therefore my precision can potentially be poorer than previous research as the focus is on being as far from specific as possible. 
 
-There are several operating systems used on smartphones ranging from Apples 'iOS' to Googles 'Android' and lesser popular operating systems such as Windows mobile and Linux hacked phones. 
+There are several operating systems used on smartphones ranging from Apple's 'iOS' to Google's 'Android' and lesser popular operating systems such as Windows mobile and Linux hacked phones. 
 
-While technology has pushed smartphones further than before and shall carry on doing so it's important the note that my findings are limited to this hardware and technology. Android is supported across multiple phones and API variations of the operating system with many different companies utilising and modifying it to give their users a precise design. As Android is supported and incorporated on more mobile devices than any other mobile operating system it seems the smart choice to try and reflect the worlds habits on smartphones. The phone in particular being used is the Samsung Galaxy S4, a flagship model from 2013. Old enough to no longer be prevalent with the S5, 6 & 7 models super seceding it but young enough to still be fully fleshed out and capable of handling our task. If the project works on this phone, it'll work on nearly all phones after it owing to legacy development.
+Whilst technology has pushed smartphones further than before and shall carry on doing so, it is important to note that my findings are limited to this hardware and technology. Android is supported across multiple phones and API variations of the operating system with many different companies utilising and modifying it to give their users a precise design. As Android is supported and incorporated on more mobile devices than any other mobile operating system, <span class="highlight">it seems the smart choice to try and reflect the world's habits on smartphones.</span> The phone in particular being used is the Samsung Galaxy S4, a flagship model from 2013. Old enough to no longer be prevalent with the S5, 6 & 7 models superseding it but young enough to still be fully fleshed out and capable of handling our task. If the project works on this phone, it will work on nearly all phones after it owing to legacy development.
 
 ![s4](hardware/s4.jpg)
 
@@ -436,26 +433,26 @@ While technology has pushed smartphones further than before and shall carry on d
 At later stages I attempted to use a Samsung S6 Edge in place of the S4 but found that little changed in the results leading me to believe that the technology in the microphones was not overwhelmingly different.
 
 ![s6](J:\University\University\MSc\Project\Final\Corpus\hardware\s6.jpg)
-
+<span class="highlight"> This pic is not working </span>
 ​                                                                         (Samsung Galaxy S6 Edge)
 
 #### Microphone
 
-The important aspect of the phone itself is the Microphone with the focus of the hardware being on it's capabilities. Now unsurprisingly Samsung do not provide the specifications of the microphone that other manufactures will, normally we can expect a datasheet reflecting the quality of the microphone but in this case nothing is present. The model of phone is referred to the Samsung I9505 Galaxy S4 only provides minimal specifications on what the phone is capable of doing; such as wireless (WiFi) specifications.
+The important aspect of the phone itself is the microphone with the focus of the hardware being on it's capabilities. Now unsurprisingly, Samsung do not provide the specifications of the microphone that other manufactures will. Normally we can expect a datasheet reflecting the quality of the microphone but in this case nothing is present. The model of phone, referred to as the Samsung I9505 Galaxy S4, only provides minimal specifications on what the phone is capable of doing; such as wireless (WiFi) specifications.
 
 Instead I opted to use a spectral frequency analyser and some code to identify the frequency spectrum that the S4 could sample at. We can assume that the phone samples human speech and that if humans can hear between a range of 20Hz-20KHz then the phone must be able to sample this correctly.
 
-Assuming such that the highest range is 20KHz then we can use Nyquists theorem to determine that the highest safest sampling rate that will cause no audio loss is 2 times that, hence 40KHz, standard sampling rates around this value include 44.1KHz and 48KHz.
+Assuming such that the highest range is 20KHz then we can use Nyquist's theorem to determine that the highest safest sampling rate that will cause no audio loss is twice that, hence 40KHz, standard sampling rates around this value include 44.1KHz and 48KHz.
 
 We can prove this further by demonstrating using a spectral analyser that the phone is able to identify frequency responses from upwards of 20KHz.
 
 ![spectro](hardware/spectro.png)
 
-Therefore I knew that the phones microphone should be more than capable of identifying the keystrokes of the keyboard. However the accuracy may not be as high as more omnidirectional and precise microphones.
+Therefore I knew that the phone's microphone should be more than capable of identifying the keystrokes of the keyboard. However the accuracy may not be as high as more omnidirectional and precise microphones.
 
 ### 4.2 The Android Operating System
 
-As mentioned prior this operating system designed by Google is found on more smartphones than any other operating system. Not all phones run the same versions with many running older versions rather than the newest versions. Vendors will often tailor Android for their users in the case of Samsung providing or closing certain features behind their security or providing enhanced features such as 'Samsung Pay'. 
+As mentioned prior this operating system designed by Google is found on more smartphones than any other operating system. Not all phones run the same version, with many running older versions rather than the newest. Vendors will often tailor Android for their users in the case of Samsung providing or closing certain features behind their security or providing enhanced features such as 'Samsung Pay'. 
 
 ![android](hardware/android.png)
 
@@ -464,31 +461,31 @@ As mentioned prior this operating system designed by Google is found on more sma
 
 
 * Samsung Galaxy S4 runs Lollipop (Android 5.0.1)
-* Samsung Galaxy S6 Edge run Nougat (Android 7.0)
+* Samsung Galaxy S6 Edge runs Nougat (Android 7.0)
 
 So by testing both these devices with the developed application we can sweep around 40% of all Android operating systems and in-between those too (between Android 5.x - 7.x).
 
 #### Android Java
 
-Android uses 'java' as it's primary programming interaction. Although it does not use the JVM (Java virtual machine) or bytecode like normal Java applications instead opting for it's own 'Dalvik' machine and bytecode. It provides the same interaction that Java does and is synonymously known as Java but it's not entirely the same working principle. Although for the purpose of this project, it won't make much difference in the long run.
+Android uses 'java' as it's primary programming interaction. However, it does not use the JVM (Java Virtual Machine) or bytecode like normal Java applications instead it opts for its own 'Dalvik' machine and bytecode. It provides the same interaction that Java does and is synonymously known as Java but it is not entirely the same working principle. Although for the purpose of this project, it will not make much difference in the long run.
 
 ### 4.3 Keyboard Hardware
 
-In this project I have decided to utilise a mechanical keyboard over a typical membrane keyboard. Mechanical keyboards are louder and well structured internally compared to membrane and while this may seem like a trade off in terms of the attack vector - it's a controlled lab environment with a focus on pure identification and analysis to begin with.
+In this project I have decided to utilise a mechanical keyboard over a typical membrane keyboard. Mechanical keyboards are louder and well structured internally compared to membrane and while this may seem like a trade off in terms of the attack vector - it is a controlled lab environment with a focus on pure identification and analysis to begin with.
 
-The keyboard itself is the Razor Black Widow Ultimate 2014 Edition mechanical keyboard and while that name sounds intense it's a gaming keyboard with backlit elements and macro keys. It's designed to be powerful and loud which makes it ideal for analysis. 
+The keyboard itself is the "Razer Black Widow Ultimate 2014 Edition" mechanical keyboard and while that name sounds intense, it is a gaming keyboard with backlit elements and macro keys. It is designed to be powerful and loud which makes it ideal for analysis. 
 
 ![keyboard](/hardware/keyboard.jpg)
 
-​                                                  (Razor Black Widow Ultimate 2014 Edition Keyboard)
+​                                                  (Razor Black Widow Ultimate 2014 Edition Keyboard) 
 
-Another keyboard is present but this one is a simple membrane keyboard and exists for purely for varying testing conditions.
+Another keyboard is present but this one is a simple membrane keyboard and exists for purely for varying testing conditions. <span class="highlight"> What one? </span>
 
 ## 5. Testing conditions
 
 ### 5.1 Constraints
 
-The testing behind the project follows tight constraints in order to control the environment and tests as much as possible. Some elements are almost impossible to guarantee identical values for while others can be controlled fairly easily. Below are the list of constraints and variables that testing suffered from. 
+The testing behind the project follows tight constraints in order to control the environment and tests as much as possible. Some elements are almost impossible to guarantee identical values for, while others can be controlled fairly easily. Below are the list of constraints and variables that testing suffered from. 
 
 For the **methodology** behind the testing see testing methodology, section 6. 
 
@@ -498,15 +495,15 @@ As mentioned prior the keyboard used in this work was a Razor Black Widow Ultima
 
 ###### 5.1.1.1 Location
 
-The location of the keyboard is as relevant as the location of the phone, both need to remain identical throughout all testing and cannot be subject to change else the values and training data provided to the application will be invalid. By keeping the keyboard in the same location each time in proportion to the phone we guarantee that our testing will not be impacted by variations in distance. 
+The location of the keyboard is as relevant as the location of the phone, both need to remain identical throughout all testing and cannot be subject to change, otherwise the values and training data provided to the application will be invalid. By keeping the keyboard in the same location each time in proportion to the phone, we guarantee that our testing will not be impacted by variations in distance. 
 
-Using a laser cut frame from wood I was able to fix the location of the keyboard at all times as with the location of the smartphone. For more information on the wooden frame see section **5.1.3**.
+Using a laser cut frame from plywood as a template, I was able to fix the position of the keyboard and smartphone to keep the distance constant. For more information on the wooden frame see section **5.1.3**.
 
 ![frame_keyboard](/testing_conditions/frame_keyboard.JPG)
 
 ###### 5.1.1.2 Membrane vs Mechanical
 
-I choose the black widow keyboard owing to it's mechanical nature and prominent feature set. There are multiple mechanical keyboards on the market but for me this keyboard was distinct and easily available being my personal keyboard of choice. Although prior research had investigated the differences they too felt that mechanical keyboards were a step in the right direction. The important detail for acoustic keylogging is that mechanical keyboards are often much louder, although this can vary based on the switches used - in the case of the Razor model used it's a custom bespoke switching system.
+I choose the "Black Widow" keyboard owing to its mechanical nature and prominent feature set. There are multiple mechanical keyboards on the market but for me this keyboard was distinct and easily available being my personal keyboard of choice. Although prior research had investigated the differences, they too felt that mechanical keyboards were a step in the right direction. The important detail for acoustic keylogging is that mechanical keyboards are often much louder, although this can vary based on the switches used - in the case of the Razer model used it's a custom bespoke switching system.
 
 For distinct differences in membrane versus mechanical see the diagram below.
 
@@ -522,11 +519,11 @@ As mentioned prior the smartphone used was the Samsung Galaxy S4 primarily with 
 
 ###### 5.1.2.1 Operating System
 
-Albeit the operating system used in this case fairly universal and as such is not so much a constraint as a benefit. However it must be said that the operating system used was Android and not another, even then versions 5.0.1 (Lollipop) and 7.0 (Nougat).
+Albeit the operating system used in this case is fairly universal and as such is not so much a constraint as a benefit. However it must be said that the operating system used was Android and not another, even then versions 5.0.1 (Lollipop) and 7.0 (Nougat).
 
 ###### 5.1.2.2 Microphone
 
-The placement and positioning on the phone(s) is important for microphone usage in this project. For example while the S6 Edge and S4 may look very similar their microphone placements are different. Firstly both phones have dual microphones and offer one on the top and bottom faces of the device, however the S4 and S6 mirror each other with placement such that the S4s bottom microphone is on the left hand portion of the face while the S6s microphone is on the right hand side. As mentioned in the hardware section that the technology of the microphone can vary on the how well data can be sampled, this is a constant provided by the phone model itself but later models may use more sophisticated microphone technology.
+The placement and positioning on the phone(s) is important for microphone usage in this project. For example, while the S6 Edge and S4 may look very similar their microphone placements are different. Firstly both phones have dual microphones and offer one on the top and bottom faces of the device, however the S4 and S6 mirror each other with placement such that the S4's bottom microphone is on the left hand portion of the face while the S6's microphone is on the right hand side. As mentioned in the hardware section, the technology of the microphone can vary on the how well data can be sampled, this is a constant provided by the phone model itself but later models may use more sophisticated microphone technology.
 
 When testing I had to be cautious with the wooden frame not to obstruct the microphones.
 
@@ -541,7 +538,7 @@ The area in which I recorded all of my samples and results. Initially I recorded
 
 The lab itself was my living room as this was the most isolated and quietest part of my house and I recorded on top of a metal plate to avoid creaking of a wooden table. 
 
-I created a wooden frame to fix the locations of the smartphone and the keyboard as seen in previous images of this section. The frame itself was designed in the shed to match the measurements of the Samsung S4 as well as the Razor keyboard. It was intended to provide modularity in the fixed position by allowing up to 8 different positions for the smartphone to be fixed in; all centring around the keyboard. While providing space for both microphones on the phone. 
+I created a wooden frame to fix the locations of the smartphone and the keyboard as seen in previous images of this section. The frame itself was designed in the shed to match the measurements of the Samsung S4 as well as the Razer keyboard. It was intended to provide modularity in the fixed position by allowing up to 8 different positions for the smartphone to be fixed in; all centring around the keyboard while providing space for both microphones on the phone. 
 
 ![frame_empty](testing_conditions/frame_empty.JPG)
 
@@ -549,23 +546,23 @@ I created a wooden frame to fix the locations of the smartphone and the keyboard
 
 ### 5.2 Variables
 
-Throughout the testing their are variables that exceed my control, these variables may influence the outcome of the results of testing and are mentioned below.
+Throughout the testing there are variables that exceed my control. These variables may influence the outcome of the results of testing and are mentioned below.
 
 #### 5.2.1 Background noise
 
-As mentioned I live next to Gatwick and even before then I lived with 5 other students. Background noise from aircraft, farm animals, people, floorboards creaking etc are all likely to disturb the accuracy of the tests. I attempted to minimize the effects of this by only recording at dormant times (Where little people are around) and in-between aircrafts landing and taking off. You can see in my testing recordings that I actually pause before proceeding to training more data as to avoid specifically aircraft interference. 
+As mentioned I live next to Gatwick and even before then I lived with 5 other students. Background noise from aircraft, farm animals, people, floorboards creaking etc are all likely to disturb the accuracy of the tests. I attempted to minimize the effects of this by only recording at dormant times (where little people are around) and in-between aircrafts landing and taking off. You can see in my testing recordings that I actually pause before proceeding to training more data as to avoid specifically aircraft interference. 
 
 #### 5.2.2 Phone model
 
-While the phone model in my project is fixed it's important to note that this is a variable in the real world and may not reflect all potential outcomes of the real world under similar testing procedures. I did utilise 2 different makes of Samsung smartphones to try and demonstrate this but other manufactures or entirely different phones in general may be impacted by these testing conditions.
+While the phone model in my project is fixed it is important to note that this is a variable in the real world and may not reflect all potential outcomes of the real world under similar testing procedures. I did utilise 2 different makes of Samsung smartphones to try and demonstrate this but other manufacturers or entirely different phones in general may be impacted by these testing conditions.
 
 #### 5.2.3 Location of phone
 
-The phone can change it's location as mentioned prior about the frame although this variable is more of a constant set where there are only 8 potential locations for the phone to be, however depending on the location it is more than likely to change the values associated with the results.
+The phone can change its location as mentioned prior, although this variable is more of a constant set where there are only 8 potential locations for the phone to be, however depending on the location it is more than likely to change the values associated with the results.
 
 #### 5.2.4 Keyboard
 
-While in the constants of this testing I will be using the Razor mechanical keyboard, in the real world the keyboard being monitored may be of varying size or style. It's important to note that this sampling keylogger will only be trained to this specific keyboard and holds no promises on it's capability of identifying keys from other keyboards.
+While in the constants of this testing I will be using the Razer mechanical keyboard. In the real world the keyboard being monitored may be of varying size or style. It is important to note that this sampling keylogger will only be trained to this specific keyboard and holds no promises on its capability of identifying keys from other keyboards.
 
 #### 5.2.5 Impact strength & location
 
@@ -591,7 +588,7 @@ Analysing these key presses without any software on the phone became very tricky
 
 ​                                                           Analysing the 'ENTER' key in more detail.
 
-As shown in the image above, actually identifying what each key was doing became tricky as the microphone was not sophisticated enough to identify what was previously established in Kellys research. This led to awkward problems with analysing data and feature extraction techniques although later down the line this was dealt with. 
+As shown in the image above, actually identifying what each key was doing became tricky as the microphone was not sophisticated enough to identify what was previously established in Kelly's research. This led to awkward problems with analysing data and feature extraction techniques although later down the line this was dealt with. 
 
 Below is a video of my first set of samples, after these initial sets of samples were gathered I moved onto using my own application to gather the data itself. Below is a list of the initial audio recordings:
 
@@ -620,7 +617,7 @@ The small subset consisted of:
 * LEFT CONTROL
 * ENTER
 
-And was used for testing early implementations of the device. It would take time to retrain the system so training all keys would be pointless to then retrain them again after a small update. In incredibly early implementations only two keys were used for training to garner enough knowledge about the capabilities of the implemented feature extraction techniques. These keys were:
+and was used for testing early implementations of the device. It would take time to retrain the system so training all keys would be pointless to then retrain them again after a small update. In incredibly early implementations only two keys were used for training to garner enough knowledge about the capabilities of the implemented feature extraction techniques. These keys were:
 
 * SPACE
 * ENTER
@@ -687,21 +684,21 @@ Audio frequency is audible to humans and is a measurement of periodic vibration 
 
 A Fourier transform is used on a sequence of 'raw' audio samples to produce a map of the frequency domain, this domain can then be parsed to identify frequency traits in an audio sample. 
 
-In the case of the application, I was interested in prominent frequencies (The resonating frequency) and it's associated magnitude. Both of which can be used to identify peaks and trends in key presses.
+In the case of the application, I was interested in prominent frequencies (the resonating frequency) and its associated magnitude. Both of which can be used to identify peaks and trends in key presses.
 
 ### 7.2 Pre-recorded audio extraction
 
-All previous research focused on pre-recorded analysis, often working on the same data over the entire period. Some research utilised 10 minute recordings and worked on analysing them more critically over time while others only focused on small segments of 10 characters and identifying SSH passwords. All this research used custom computers and hardware to identify and accurately build upon datasets. In the case of my project is was limited to the smartphone at hand and the data had to be analysed then and there.
+All previous research focused on pre-recorded analysis, often working on the same data over the entire period. Some research utilised 10 minute recordings and worked on analysing them more critically over time while others only focused on small segments of 10 characters and identifying SSH passwords. All this research used custom computers and hardware to identify and accurately build upon datasets. In the case of my project, it was limited to the smartphone at hand and the data had to be analysed then and there.
 
 ### 7.3 Live audio extraction
 
-I decided to focus on live audio extraction as previously all forms of research had utilised pre-recorded analysis. Not only would live-analysis be more difficult but would also provide an element that hasn't been investigated yet. Live audio analysis without a doubt showed inconsistencies compared to pre-recorded and its accuracy severely dropped although this could owe to the smartphone at hand as opposed to a custom machine performing post analysis.
+I decided to focus on live audio extraction as previously all forms of research had utilised pre-recorded analysis. Not only would live-analysis be more difficult but would also provide an element that had not been investigated yet. Live audio analysis without a doubt showed inconsistencies compared to pre-recorded and its accuracy severely dropped although this could owe to the smartphone at hand as opposed to a custom machine performing post analysis.
 
 ### 7.4 Isolating peaks
 
 The microphone API on the Android platform provided the potential for the programmer to engage the microphone to record at set sampling ranges to specific buffers. However the limitations of such came at the cost of how sampling occurred. 
 
-The Android API limited the analysis of live audio by only allowing the user to store the last N values in a buffer to be analysed such that you could record as much as you wanted but could only analyse so much. Due to sampling rate being 44,100 Hz I decided to buffer an array of size 44,100Hz matching the sampling frequency such that I measured the entire second in it's full scope. This entire second could then be subsampled by isolating the peaks between key presses made in that singular second. 
+The Android API limited the analysis of live audio by only allowing the user to store the last N values in a buffer to be analysed such that you could record as much as you wanted but could only analyse so much. Due to sampling rate being 44,100 Hz, I decided to buffer an array of size 44,100Hz matching the sampling frequency such that I measured the entire second in its full scope. This entire second could then be subsampled by isolating the peaks between key presses made in that singular second. 
 
 #### 7.5 Subsampling
 
@@ -713,7 +710,7 @@ Once isolated and subsampled I then fed these individual subsamples into my feat
 
 ### 8.1 Simple comparison
 
-Initially I tried performing a simple comparison, storing a relative frequency to each key and identifying whether the isolated subsamples prominent frequency matched the relative frequency. This was poorly defined and provided very little accuracy often mistaking keys for completely irrelevant or unbelievably different keys all together.
+Initially I tried performing a simple comparison, storing a relative frequency to each key and identifying whether the isolated subsample's prominent frequency matched the relative frequency. This was poorly defined and provided very little accuracy often mistaking keys for completely irrelevant or unbelievably different keys all together.
 
 ### 8.2 Supervised and unsupervised learning
 
@@ -721,15 +718,15 @@ Two forms of machine learning were applied to this project both supervised and u
 
 #### 8.2.1 Mean approximation
 
-This was a general supervised machine learning object-orientated approach and was cocktail of averages and value appreciation. By taking the prominent frequency of each key press and when training feeding it into this algorithm I was able to tally the combined value of prominent frequencies reflecting a key and then divide by my total samples to give a mean approximation. This value allowed for consistent cross-checking and worked fairly well to begin with although fell apart when background noise was introduced as only one value was associated to each key and it's probable outcome. This led to inconsistencies in datasets when a lot of key presses were made in a singular second and the variables mentioned in Testing conditions sections played out. 
+This was a general supervised machine learning object-orientated approach and was <span class="highlight"> cocktail ?</span> of averages and value appreciation. By taking the prominent frequency of each key press and feeding it into this algorithm during training, I was able to tally the combined value of prominent frequencies reflecting a key and then divide by my total samples to give a mean approximation. This value allowed for consistent cross-checking and worked fairly well to begin with. However, this fell apart when background noise was introduced as only one value was associated to each key and its probable outcome. This led to inconsistencies in datasets when a lot of key presses were made in a singular second and the variables mentioned in Testing Conditions sections played out. 
 
 In a controlled environment where nothing was impacting the circumstances at hand this performed fairly well with an accuracy of around ~52%. See the results section for more details.
 
 #### 8.2.2 K-means clustering
 
-Previous researchers used K-means clustering as an unsupervised method of categorising their keystrokes from feature analysis. The unsupervised machine learning technique revolves around the value of **K** which is a defined number of clusters that is provided by the programmer and then parsing a series of datasets (normally onto a 2d plane) iteratively until they are completely categorised into their respective clusters. This requires the use of **centroids** which act as the central point for each cluster. Each centroid is updated at the end of an iteration to reflect the concentration of the surrounding data around it.
+Previous researchers used K-means clustering as an unsupervised method of categorising their keystrokes from feature analysis. The unsupervised machine learning technique revolves around the value of **K** which is a defined number of clusters that is provided by the programmer and then parsing a series of datasets (normally onto a 2D plane) iteratively until they are completely categorised into their respective clusters. This requires the use of **centroids** which act as the central point for each cluster. Each centroid is updated at the end of an iteration to reflect the concentration of the surrounding data around it.
 
-It yielded more effective results than supervised mean approximation but was more complicated and complex, leading to less efficiency. Effectively the application would extract features from each key press such as frequency, magnitude etc and then apply this to the K-means implementation such that it can iterate again over the dataset and cluster that value. Clustered values would be associated to keys on the keyboard.
+It yielded more effective results than supervised mean approximation but was more complicated and complex, leading to less efficiency. Effectively the application would extract features from each key press such as frequency, magnitude etc. and then apply this to the K-means implementation such that it can iterate again over the dataset and cluster that value. Clustered values would be associated to keys on the keyboard.
 
 ## 9. Development process
 
@@ -741,11 +738,11 @@ I partially followed an iterative design approach by adding components of the ap
 
 #### 9.1.2 Version control
 
-I utilised version control systems such as git to maintain my project, my first application was developed in February and completely rewritten as it fell short of a structured application, it was more a getting to grips with Android Studio and working with audio sampling. By the beginning of summer I had completely redesigned and created a new application from scratch with followed programming styles and conditions more closely.
+I utilised version control systems such as git to maintain my project, my first application was developed in February and completely rewritten as it fell short of a structured application, <span class="highlight">it was used more for getting to grips with Android Studio and working with audio sampling than an actual implementation</span>. By the beginning of summer I had completely redesigned and created a new application from scratch which followed programming styles and conditions more closely.
 
 #### 9.1.3 IDE (Integrated Development Environment)
 
-For the project Android Studio was used to develop and maintain the application while using an emulator for some minor details such as verifying output data whereas for the majority of testing a real phone was attached to the computer and interacted directly with the IDE. Emulation does not cover well with audio sampling and this would train from my actual desktop microphone rather than my smartphones microphone which would lead to poor evaluation of results.
+For the project, Android Studio was used to develop and maintain the application while using an emulator for some minor details such as verifying output data, whereas for the majority of testing a real phone was attached to the computer and interacted directly with the IDE. Emulation does not cover well with audio sampling and this would train from my actual desktop microphone rather than my smartphone's microphone which would lead to poor evaluation of results.
 
 ### 9.2 Program Steps
 
@@ -753,7 +750,7 @@ Below is a detailed explanation of the programs functionality listing out the fu
 
 #### 9.2.1 Initial Setup
 
-Activities exist in Android applications, these activates range based on what the task of the application is. In the case of my program it's focus was on background cataloguing and not per say Google maps; therefore I utilised a 'blank activity'.
+Activities exist in Android applications, <span class ="highlight">these activates range ??? </span>based on what the task of the application is. In the case of my program, its focus was on background cataloguing and not per say Google maps; therefore I utilised a 'blank activity'.
 
 All activities extend from the 'AppCompatActivity' which allows a class that extends this class to override two important functions.
 
@@ -854,7 +851,7 @@ As can be seen the progress of what occurs in startup loosely abstracted is:
 * The main GUI window is attached to the layout of the application activity.
 * The KeyHandler is loaded from internal memory, or created if need be.
 * The sound management handler and GUI spinner are created.
-* All characters from the KeyHandlers training information are loaded and applied to the spinner.
+* All characters from the KeyHandler's training information are loaded and applied to the spinner.
 * The spinner is updated with relevant text for the default key that will be trained.
 * All buttons have been added via the XML activity file will have their associated listeners attached. The IDs present in snippet shown before this subsection are used to manage the varying buttons.
 * Finally a thread is created and spawned from a private internal class for managing the sound sampling and subsampling. 
@@ -873,13 +870,13 @@ Each intractable object in the view has settings that can be modified for variou
 
 ​                                      Settings on the right hand side can be used to modify the objects.
 
-In the above example we can see the **"ID"** which is used in identifying this GUI component in the main program, specifically in the case of the **save** button it's located in the initial setup phase of the application.
+In the above example we can see the **"ID"** which is used in identifying this GUI component in the main program, specifically in the case of the **save** button - it is located in the initial setup phase of the application.
 
 ```Java
 private final int SAVE_ALL = R.id.save;
 ```
 
-Using this it's then possible to interact with the component as such:
+Using this, it's then possible to interact with the component as such:
 
 ```Java
 Button saveButton = (Button) findViewById(SAVE);
@@ -901,11 +898,11 @@ Simply put this will do two things:
 * Try to load the data if it exists.
 * If not then create a new fresh set of blank data for each key being trained.
 
-The KeyHandler class provides access to more than saving and loading of datasets but for loading datasets it utilises **serialisation** in Java to safely preserve the state of the keys training data objects. To quote Oracles [website](https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html) regarding Java object serialisation.
+The KeyHandler class provides access to more than saving and loading of datasets but for loading datasets it utilises **serialisation** in Java to safely preserve the state of the key's training data objects. To quote Oracle's [website](https://docs.oracle.com/javase/tutorial/jndi/objects/serial.html) regarding Java object serialisation.
 
 > To *serialize* an object means to convert its state to a byte stream so that the byte stream can be reverted back into a copy of the object.
 
-It's a useful technique in handling object orientated data. Each key has an object storing it's training data and the entire object is preserved and then restored when the application launches again. The KeyHandler has a constant fixed array determining the active keys in use. This can vary to help training and only loading data relevant at the time of use.
+It's a useful technique in handling object orientated data. Each key has an object storing its training data and the entire object is preserved and then restored when the application launches again. The KeyHandler has a constant fixed array determining the active keys in use. This can vary to help training and only loading data relevant at the time of use.
 
 ```Java
 private static final String[] keySamples = {"ENTER", "SPACE", "LEFT-CONTROL", "Q", "O"};
@@ -966,11 +963,11 @@ This segment of code handles creating the Thread and running it.
         smRun.start();
 ```
 
-This thread handles multiple elements but mostly focuses on interacting with the microphone by performing subsampling. The subsampling itself is handled **SoundMeter** class. 
+This thread handles multiple elements but mostly focuses on interacting with the microphone by performing subsampling. The subsampling itself is handled by the **SoundMeter** class. 
 
 Whether the program is training data or not will verify the outcome of the sampled audio, if training occurs it will add the sampled data to both machine learning mechanisms, otherwise it will try to identify the keystroke from the existing datasets provided to the learning mechanisms.
 
-The last portion of this class aims to provide feedback on the audio noise level being received for visualise guidance in training. By using a progress bar to determine the 'loudness' of the amplitude of the sound which is updated in the GUI thread.
+The last portion of this class aims to provide feedback on the audio noise level being received for visual guidance in training. I used a progress bar to determine the 'loudness' of the amplitude of the sound which is updated in the GUI thread.
 
 ```Java
                    //amplitude = soundMeter.getHighestAmplitude();
@@ -990,11 +987,11 @@ The last portion of this class aims to provide feedback on the audio noise level
 
 #### 9.2.2 Feature Extraction
 
-Feature extraction is handled by the **SoundMeter** class which provides an interaction with the **AudioRecord** API for extracting data from the microphones internal buffer. It samples at 44,100Hz and an encoding scheme of PCM at 16bits. 
+Feature extraction is handled by the **SoundMeter** class which provides an interaction with the **AudioRecord** API for extracting data from the microphone's internal buffer. It samples at 44,100Hz and an encoding scheme of PCM at 16bits. 
 
 Within in the **SoundMeter** class are two inner classes that provide the Fourier transform and amplitude sampling mechanisms. The application will sample the amplitude when processing noise every opportunity it gets. Sampling does some very important details which happen within a while loop which will only terminate once all 'subsamples' are found. By sampling we receive an array of amplitude values within that second of sampling.
 
-The loop is designed to isolate each peak from the highest amplitude first, then the next highest; following this until there is no longer any amplitudes exceeding a predefined value. Once an amplitude is found the previous N indices and further N indices are marked as preserved and that block of indices is classed as a subsample. When iterating over the array again any preserved subsamples will be 'skipped'. This allows the algorithm to successfully identify multiple keystroke peaks within a second while sampling live-data. 
+The loop is designed to isolate each peak from the highest amplitude first, then the next highest; following this until there are no longer any amplitudes exceeding a predefined value. Once an amplitude is found, the previous N indices and further N indices are marked as preserved and that block of indices is classed as a subsample. When iterating over the array again, any preserved subsamples will be 'skipped'. This allows the algorithm to successfully identify multiple keystroke peaks within a second while sampling live-data. 
 
 ```Java
     public AmplitudeSample sampleAmplitude(final String key){
@@ -1116,27 +1113,27 @@ Each subsample is then parsed into their respective learning models for analysis
 
 #### 9.2.4 Supervised and unsupervised learning
 
-Both forms of learning are handled by the **KeyHandler** class. This class aims to provide an wrapped API for interaction outside the class to both machine learning techniques. The **KeyHandler** is established early on in the application and when instantiated will attempt to load all relevant records of data from both K-means and Mean approximation. They aim to protect the datasets from being tampered with outside of the handler by utilising protected and private methods within the associated classes.
+Both forms of learning are handled by the **KeyHandler** class. This class aims to provide a wrapped API for interaction outside the class to both machine learning techniques. The **KeyHandler** is established early on in the application and when instantiated will attempt to load all relevant records of data from both K-means and Mean approximation. They aim to protect the datasets from being tampered with outside of the handler by utilising protected and private methods within the associated classes.
 
 ##### 9.2.4.1 Mean approximation
 
 Mean approximation is a primitive self adjusting algorithm for basic interpretation of keystrokes. By being told the key and associated values of that key when training it adjusts a mean value accordingly. It utilises an internal wrapper class called **Average** that provides a very primitive way of averaging data. Mean approximation is the less effective means of transcribing the results given from the key logger but is a very simple design. 
 
-Each key is given it's own object from the class **KeySample**. These objects aim to encapsulate the approximation of the value and allow the handler to to create, model or interact with different datasets depending on the circumstances; each key is saved independently of one another. This allows a trainer to decide whether he wants to remove all data associated to one key, or copy it over to another etc. 
+Each key is given its own object from the class **KeySample**. These objects aim to encapsulate the approximation of the value and allow the handler to to create, model or interact with different datasets depending on the circumstances; each key is saved independently of one another. This allows a trainer to decide whether he wants to remove all data associated to one key, or copy it over to another etc. 
 
 ##### 9.2.4.2 K-means clustering
 
-K-means clustering is an unsupervised algorithm utilised by previous researchers in an attempt of classifying keystrokes. In their results they found it very accurate. The algorithm works on an iterative principle by creating a **K** number of clusters that are each mapped on a 2d plane by their associated points. These points focus around a **centroid** which is randomly generated for each cluster. By providing an X & Y for a sample I'm able to plot my keystrokes on a 2D graph. This graph can be used to identify and retrain further data. However owing to this I don't know the keys through supervised learning as done with mean approximation instead grouping can complicate matters like this.
+K-means clustering is an unsupervised algorithm utilised by previous researchers in an attempt to classify keystrokes. In their results they found it very accurate. The algorithm works on an iterative principle by creating a **K** number of clusters that are each mapped on a 2D plane by their associated points. These points focus around a **centroid** which is randomly generated for each cluster. By providing an X & Y for a sample I'm able to plot my keystrokes on a 2D graph. This graph can be used to identify and retrain further data. <span class="highlight">However owing to this I don't know the keys through supervised learning as done with mean approximation instead grouping can complicate matters like this. ???</span>
 
 The mechanism itself is a modified rendition of K-means clustering provided by [data on focus](http://www.dataonfocus.com/k-means-clustering-java-code/).
 
-Each time a sample is identified it is plotted on a graph and the entire algorithm restarts and re-plots all the data. The centroids adjust themselves around their clusters as points are associated to different clusters. These clusters are used to identify different keys and as such each key has its own cluster.
+Each time a sample is identified, it is plotted on a graph and the entire algorithm restarts and re-plots all the data. The centroids adjust themselves around their clusters as points are associated to different clusters. These clusters are used to identify different keys and as such each key has its own cluster.
 
 The **KmeansHandler** handles data in and out of clusters by adding points based on their frequency and magnitude. These are then plotted on a graph and recalculated iteratively to form the new basis for analysis. 
 
 #### 9.2.5 Storing results
 
-Results are stored through serialisation as mentioned prior, Kmeans clustering stores all data together as individual clusters are unrecognised and difficult to manage on their own especially when attempting to reintegrate them within an existing dataset. Mean approximation allows for individual data on a key to be saved and will manage them accordingly. In the application terminates all data will be saved, and the option to remotely save at any point is present as well as deleting data. 
+Results are stored through <span class="highlight">serialisation (stick with either z or s, probably z as thats what oracle uses, silly americans) </span>as mentioned prior, K-means clustering stores all data together because individual clusters are unrecognised and difficult to manage on their own, especially when attempting to reintegrate them within an existing dataset. Mean approximation allows for individual data on a key to be saved and will manage them accordingly. When the application terminates all data will be saved, and the option to remotely save at any point is present as well as deleting data. 
 
 ### 9.3 Android API
 
@@ -1156,7 +1153,7 @@ Must be inserted into this file.
 
 #### 9.3.2 AudioRecord
 
-**AudioRecord** is the API class provided for interacting with the smartphones microphone on the Android operating system. It provides the ability to adjust the sampling rate, encoding and more. It works by sampling audio at the rate given and then inserting this into a buffer which can be read from. Starting and stopping is a simple procedure of calling methods 'start' and 'stop'. 
+**AudioRecord** is the API class provided for interacting with the smartphone's microphone on the Android operating system. It provides the ability to adjust the sampling rate, encoding and more. It works by sampling audio at the rate given and then inserting this into a buffer which can be read from. Starting and stopping is a simple procedure of calling methods 'start' and 'stop'. 
 
 Sampling works as such:
 
@@ -1168,7 +1165,7 @@ Sampling works as such:
     }
 ```
 
-Similar to that of a C method in which a buffer is filled with the data prescribed. The 'minSize' is the same as the sampling frequency such that the array of values given is that of a single second and not any less. As live audio is being recorded there is the possibility of cutting off between seconds and losing valuable data but this is a cost of the mechanism and the potential to rectify this exists by patching samples together but this extends beyond the scope of this project.
+Similar to that of a C method in which a buffer is filled with the data prescribed. The 'minSize' is the same as the sampling frequency such that the array of values given is that of a single second and not any less. As live audio is being recorded there is the possibility of cutting off between seconds and losing valuable data. This is a cost of the mechanism and the potential to rectify this exists by patching samples together but this extends beyond the scope of this project.
 
 #### 9.3.3 XML Design layouts
 
@@ -1189,13 +1186,13 @@ As shown prior in the **visulisation** section of this corpus, XML design layout
 
 With the bulk of that being generated from AndroidStudio.
 
-The interface design was not a prominent feature in the project as its intention was not for user interaction but for debugging purposes, so long as the user was capable and skilled in the field of this project.
+The interface design was not a prominent feature in the project as its intention was not for user interaction but for debugging purposes, so long as the user was capable and skilled in the field of this project. <span class="highlight" Not a fan of the last bit of wording here :/ </span>
 
 ### 9.4 GUI functionality
 
 #### 9.4.1 Buttons
 
-Multiple buttons exist on the GUI to perform debugging routines. Below is a list of each their associated feature:
+Multiple buttons exist on the GUI to perform debugging routines. Below is a list of their associated features:
 
 * CLEAR ALL - Clears all data associated with Mean approximation.
 * CLEAR CHAR - Clears the Mean approximation data associated with the current character being trained.
@@ -1219,7 +1216,7 @@ The design of the application appeared as so:
 
 ![design](development/design.PNG)
 
-With the intention of providing useful interaction when sampling and training the data. It's scaled using a relative layout in XML through Android Studio.
+The intention of providing useful interaction when sampling and training the data was taken into consideration when building the GUI. It is scaled using a relative layout in XML through Android Studio.
 
 ## 10. Results
 

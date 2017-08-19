@@ -99,18 +99,11 @@
      * Supervised/Unsupervised Learning
        * Mean approximation
        * Kmeans clustering
-         * 1 dimensional
-         * 2 dimensional
      * Storing results
    * Android API
      * API Permissions
      * AudioRecord
-     * Thread management
      * XML Design Layouts
-   * Storage facilities
-     * Internal and External Storage
-     * Serialisation
-     * Exporting and importing datasets
    * GUI functionality
      * Buttons
      * Visualising
@@ -954,41 +947,271 @@ public class Foo implements Serializable { ... }
 
 ##### 9.2.1.4 Thread establishment
 
+A class called **UpdateProgress** exists to handle threading elements and sound sampling such that application can handle multitasking. Android also provides a method for updating GUI components on the main application thread so that this doesn't throttle the users experience with the application.
+
+This segment of code handles creating the Thread and running it.
+
+```Java
+        /* Will update the UI based on the sound meters finding */
+        UpdateProgress up = new UpdateProgress(soundMeter, 	 spinner.getSelectedItem().toString());
+        smRun = new Thread(up);
+        smRun.start();
+```
+
+This thread handles multiple elements but mostly focuses on interacting with the microphone by performing subsampling. The subsampling itself is handled **SoundMeter** class. 
+
+Whether the program is training data or not will verify the outcome of the sampled audio, if training occurs it will add the sampled data to both machine learning mechanisms, otherwise it will try to identify the keystroke from the existing datasets provided to the learning mechanisms.
+
+The last portion of this class aims to provide feedback on the audio noise level being received for visualise guidance in training. By using a progress bar to determine the 'loudness' of the amplitude of the sound which is updated in the GUI thread.
+
+```Java
+                   //amplitude = soundMeter.getHighestAmplitude();
+                    progress = (int) ((amplitude / 32768) * 100); // Value out of 100
+
+                    /* Update user interface components on the main thread */
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            out.setText("Prog: " + progress + "/100 | " + amplitude);
+                            volumeBar.setProgress(progress); // Show the 'volume' of the sound
+
+                        }
+                    });
+```
+
 #### 9.2.2 Feature Extraction
+
+Feature extraction is handled by the **SoundMeter** class which provides an interaction with the **AudioRecord** API for extracting data from the microphones internal buffer. It samples at 44,100Hz and an encoding scheme of PCM at 16bits. 
+
+Within in the **SoundMeter** class are two inner classes that provide the Fourier transform and amplitude sampling mechanisms. The application will sample the amplitude when processing noise every opportunity it gets. Sampling does some very important details which happen within a while loop which will only terminate once all 'subsamples' are found. By sampling we receive an array of amplitude values within that second of sampling.
+
+The loop is designed to isolate each peak from the highest amplitude first, then the next highest; following this until there is no longer any amplitudes exceeding a predefined value. Once an amplitude is found the previous N indices and further N indices are marked as preserved and that block of indices is classed as a subsample. When iterating over the array again any preserved subsamples will be 'skipped'. This allows the algorithm to successfully identify multiple keystroke peaks within a second while sampling live-data. 
+
+```Java
+    public AmplitudeSample sampleAmplitude(final String key){
+
+        double[] amps = sampleDouble();
+        final ArrayList<Integer> peaks = new ArrayList<>();
+        /* While we still have peaks above the minimum amplitude */
+        while(true) {
+
+            double maxAmp = Double.MIN_VALUE;
+            int candidate = -1;
+
+            for (int i = 0; i < amps.length; i++) {
+
+                i = skipPeaks(i, peaks);
+
+                if(i >= amps.length){
+                    break;
+                }
+
+                /* Whether the current indexed amplitude exceeds the known maximum */
+                if (Math.abs(amps[i]) > maxAmp) {
+                    candidate = i; // Update indice
+                    maxAmp = Math.abs(amps[i]); // Update max amp
+                }
+
+            }
+
+            //System.out.println("maxAmp: " + maxAmp + "[" + candidate + "] > " + minimumAmp);;
+
+            /* If we've yet to exhausted all subsamples within a 10ms gap of one another */
+            if (maxAmp > minimumAmp) {
+                peaks.add(candidate);
+            } else {
+                break;
+            }
+
+        }
+
+        return new AmplitudeSample(amps, peaks, key);
+
+    }
+```
+
+
 
 #### 9.2.3 Feature Analysis
 
+Once all subsamples are found they parsed through an inner class called **FrequencySample** that parses the subsample through a Fourier transform and retrieves the prominent frequency and highest magnitude associated to that frequency to be analysed by machine learning later. 
+
+```Java
+    public class AmplitudeSample{
+
+        public final FrequencySample[] frequencyPeaks;
+        public final ArrayList<Integer> peaks;
+        public final double[] amplitudes;
+        private final String key;
+
+        public AmplitudeSample(double[] amps, ArrayList<Integer> peaks, String key){ ... }
+
+        public String getKey() { ... }
+
+        public ArrayList<Integer> getPeaks(){ ... }
+
+        public double[] getAmplitudes(){ ... }
+
+        /**
+         * Performs a FFT across all peaks found in the
+         * amplitude sample via a measurement of 'samplesIn5ms'.
+         */
+        public void parsePeaksFFT(){
+
+            double[] frequencySweep;
+            DoubleFFT_1D fft = new DoubleFFT_1D(samplesIn5ms*2);
+
+            // For every peak found
+            for(int i = 0; i < peaks.size(); i++){
+
+                // Need to create an array to hold -N & +N places
+                frequencySweep = new double[samplesIn5ms*2];
+
+                int peak = peaks.get(i);
+
+                // For peak-N places to peak+N places
+                for(int k = 0,j = (peak-samplesIn5ms < 0) ? 0 : peak-samplesIn5ms;
+                    (peak+samplesIn5ms >= amplitudes.length) ? j < amplitudes.length : j <                            peak+samplesIn5ms;
+                    j++, k++){
+                    frequencySweep[k] = amplitudes[j];
+                }
+
+                // Apply FFT
+                fft.realForward(frequencySweep);
+
+                //
+                FrequencySample frequencySample = new FrequencySample(frequencySweep);
+
+                frequencyPeaks[i] = frequencySample;
+            }
+
+        }
+
+        /**
+         * Get the highest amplitude of this amplitude sample
+         * @return highest found amplitude
+         */
+        public int getHighestAmplitude(){ ... }
+
+        public FrequencySample[] getFrequencySamples(){ ... }
+    }
+```
+
+
+
+Fast Fourier Transforms are provided by the [**JTransforms Library**](https://sites.google.com/site/piotrwendykier/software/jtransforms).
+
+Each subsample is compiled within an **AmplitudeSample** object which contains data on the entire sample as well as each subsample allowing the application to access whether machine learning is required or not.
+
+Each subsample is then parsed into their respective learning models for analysis.
+
 #### 9.2.4 Supervised and unsupervised learning
+
+Both forms of learning are handled by the **KeyHandler** class. This class aims to provide an wrapped API for interaction outside the class to both machine learning techniques. The **KeyHandler** is established early on in the application and when instantiated will attempt to load all relevant records of data from both K-means and Mean approximation. They aim to protect the datasets from being tampered with outside of the handler by utilising protected and private methods within the associated classes.
 
 ##### 9.2.4.1 Mean approximation
 
+Mean approximation is a primitive self adjusting algorithm for basic interpretation of keystrokes. By being told the key and associated values of that key when training it adjusts a mean value accordingly. It utilises an internal wrapper class called **Average** that provides a very primitive way of averaging data. Mean approximation is the less effective means of transcribing the results given from the key logger but is a very simple design. 
+
+Each key is given it's own object from the class **KeySample**. These objects aim to encapsulate the approximation of the value and allow the handler to to create, model or interact with different datasets depending on the circumstances; each key is saved independently of one another. This allows a trainer to decide whether he wants to remove all data associated to one key, or copy it over to another etc. 
+
 ##### 9.2.4.2 K-means clustering
 
+K-means clustering is an unsupervised algorithm utilised by previous researchers in an attempt of classifying keystrokes. In their results they found it very accurate. The algorithm works on an iterative principle by creating a **K** number of clusters that are each mapped on a 2d plane by their associated points. These points focus around a **centroid** which is randomly generated for each cluster. By providing an X & Y for a sample I'm able to plot my keystrokes on a 2D graph. This graph can be used to identify and retrain further data. However owing to this I don't know the keys through supervised learning as done with mean approximation instead grouping can complicate matters like this.
+
+The mechanism itself is a modified rendition of K-means clustering provided by [data on focus](http://www.dataonfocus.com/k-means-clustering-java-code/).
+
+Each time a sample is identified it is plotted on a graph and the entire algorithm restarts and re-plots all the data. The centroids adjust themselves around their clusters as points are associated to different clusters. These clusters are used to identify different keys and as such each key has its own cluster.
+
+The **KmeansHandler** handles data in and out of clusters by adding points based on their frequency and magnitude. These are then plotted on a graph and recalculated iteratively to form the new basis for analysis. 
+
 #### 9.2.5 Storing results
+
+Results are stored through serialisation as mentioned prior, Kmeans clustering stores all data together as individual clusters are unrecognised and difficult to manage on their own especially when attempting to reintegrate them within an existing dataset. Mean approximation allows for individual data on a key to be saved and will manage them accordingly. In the application terminates all data will be saved, and the option to remotely save at any point is present as well as deleting data. 
 
 ### 9.3 Android API
 
 #### 9.3.1 API Permissions
 
+Android relies heavily on a permission model to allow users to identify what exactly an application intends to utilise. As such I have to work with this system in order to access certain components of the smartphone such as the microphone and internal storage. 
+
+Permissions are requested in a XML file called **AndroidManifest.xml**, within here a programmer must state the intention of the application and request permissions from the user.
+
+For example, asking for the permission to **record audio**. 
+
+```XML
+<uses-permission android:name="android.permission.RECORD_AUDIO"/>
+```
+
+Must be inserted into this file.
+
 #### 9.3.2 AudioRecord
 
-#### 9.3.3 Thread management
+**AudioRecord** is the API class provided for interacting with the smartphones microphone on the Android operating system. It provides the ability to adjust the sampling rate, encoding and more. It works by sampling audio at the rate given and then inserting this into a buffer which can be read from. Starting and stopping is a simple procedure of calling methods 'start' and 'stop'. 
 
-#### 9.3.4 XML Design layouts
+Sampling works as such:
 
-### 9.4 Storage facilities
+```Java
+    public short[] sample(){
+        short[] buffer = new short[minSize];
+        audioRecord.read(buffer, 0, minSize);
+        return buffer;
+    }
+```
 
-#### 9.4.1 Internal and external storage
+Similar to that of a C method in which a buffer is filled with the data prescribed. The 'minSize' is the same as the sampling frequency such that the array of values given is that of a single second and not any less. As live audio is being recorded there is the possibility of cutting off between seconds and losing valuable data but this is a cost of the mechanism and the potential to rectify this exists by patching samples together but this extends beyond the scope of this project.
 
-#### 9.4.2 Serialisation
+#### 9.3.3 XML Design layouts
 
-#### 9.4.3 Exporting and importing datasets
+As shown prior in the **visulisation** section of this corpus, XML design layouts are utilised in Android to display data. Android Studio provides a GUI builder and this helps in scaling relative layouts when designing the interface. For example the **Spinner** component of the GUI is handled in XML as so:
 
-### 9.5 GUI functionality
+```XML
+    <Spinner
+        android:id="@+id/characterSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="146dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/trainerMode"
+        android:layout_alignStart="@+id/trainerMode"
+        android:layout_alignRight="@+id/trainerMode"
+        android:layout_alignEnd="@+id/trainerMode" />
+```
 
-#### 9.5.1 Buttons
+With the bulk of that being generated from AndroidStudio.
 
-#### 9.5.2 Visualising
+The interface design was not a prominent feature in the project as its intention was not for user interaction but for debugging purposes, so long as the user was capable and skilled in the field of this project.
+
+### 9.4 GUI functionality
+
+#### 9.4.1 Buttons
+
+Multiple buttons exist on the GUI to perform debugging routines. Below is a list of each their associated feature:
+
+* CLEAR ALL - Clears all data associated with Mean approximation.
+* CLEAR CHAR - Clears the Mean approximation data associated with the current character being trained.
+* SAVE - Saves all training data currently in use.
+* (CHARACTER) - [SPINNER {A,B,C,D...,Z}] - Displays all characters on a spinner so that they can be selected and trained.
+* (SAMPLING) - ON/OFF - Toggle button that lets the user decide whether sampling of audio is currently enabled.
+* (TRAINING MODE) - ON/OFF - Toggle button that lets the user decide whether to train or analyse the audio.
+* READ ALL - Read all data associated to each cluster/character and print it out to console.
+* READ CHAR - Read the current characters associated data and print it out to console.
+* RESET KM - Reset K-means clustering data.
+
+Three other elements exist on the application, a progress bar and some text.
+
+* The progress bar aims to show the current noise level from amplitude.
+* The text titled "selected character" tells the user what the current character being trained is.
+* The text below the progress bar reports debug data on the amplitude.
+
+#### 9.4.2 Visualising
+
+The design of the application appeared as so:
+
+![design](development/design.PNG)
+
+With the intention of providing useful interaction when sampling and training the data. It's scaled using a relative layout in XML through Android Studio.
 
 ## 10. Results
 

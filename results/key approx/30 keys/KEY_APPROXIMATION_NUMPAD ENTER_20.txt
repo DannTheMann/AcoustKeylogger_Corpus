@@ -1,0 +1,23 @@
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- |
+| 1 | NUMPAD ENTER | 9920 | K | 9886 | 34 | 646 |
+| 2 | NUMPAD ENTER | 9797 | K | 9886 | 89 | 523 |
+| 3 | NUMPAD ENTER | 9282 | NUMPAD ENTER | 9274 | 8 | 8 |
+| 4 | NUMPAD ENTER | 9055 | S | 9090 | 35 | 219 |
+| 5 | NUMPAD ENTER | 8550 | N | 8677 | 127 | 724 |
+| 6 | NUMPAD ENTER | 9254 | NUMPAD ENTER | 9274 | 20 | 20 |
+| 7 | NUMPAD ENTER | 9269 | NUMPAD ENTER | 9274 | 5 | 5 |
+| 8 | NUMPAD ENTER | 8559 | N | 8677 | 118 | 715 |
+| 9 | NUMPAD ENTER | 8784 | T | 8792 | 8 | 490 |
+| 10 | NUMPAD ENTER | 10153 | K | 9886 | 267 | 879 |
+| 11 | NUMPAD ENTER | 9756 | K | 9886 | 130 | 482 |
+| 12 | NUMPAD ENTER | 9670 | G | 9541 | 129 | 396 |
+| 13 | NUMPAD ENTER | 9369 | LEFT CONTROL | 9403 | 34 | 95 |
+| 14 | NUMPAD ENTER | 9217 | O | 9213 | 4 | 57 |
+| 15 | NUMPAD ENTER | 9173 | H | 9165 | 8 | 101 |
+| 16 | NUMPAD ENTER | 9575 | G | 9541 | 34 | 301 |
+| 17 | NUMPAD ENTER | 10243 | K | 9886 | 357 | 969 |
+| 18 | NUMPAD ENTER | 8518 | N | 8677 | 159 | 756 |
+| 19 | NUMPAD ENTER | 8762 | F | 8771 | 9 | 512 |
+| 20 | NUMPAD ENTER | 9557 | G | 9541 | 16 | 283 |
+accuracy = 15.0

@@ -1,0 +1,23 @@
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- |
+| 1 | BACKSPACE | 8248 | N | 8677 | 429 | 704 |
+| 2 | BACKSPACE | 8952 | BACKSPACE | 8952 | 0 | 0 |
+| 3 | BACKSPACE | 9495 | G | 9541 | 46 | 543 |
+| 4 | BACKSPACE | 9235 | O | 9213 | 22 | 283 |
+| 5 | BACKSPACE | 8868 | B | 8854 | 14 | 84 |
+| 6 | BACKSPACE | 9173 | H | 9165 | 8 | 221 |
+| 7 | BACKSPACE | 9388 | LEFT CONTROL | 9403 | 15 | 436 |
+| 8 | BACKSPACE | 8089 | N | 8677 | 588 | 863 |
+| 9 | BACKSPACE | 8669 | N | 8677 | 8 | 283 |
+| 10 | BACKSPACE | 7881 | N | 8677 | 796 | 1071 |
+| 11 | BACKSPACE | 8925 | SPACE | 8931 | 6 | 27 |
+| 12 | BACKSPACE | 9327 | I | 9319 | 8 | 375 |
+| 13 | BACKSPACE | 8298 | N | 8677 | 379 | 654 |
+| 14 | BACKSPACE | 9078 | S | 9090 | 12 | 126 |
+| 15 | BACKSPACE | 8883 | D | 8908 | 25 | 69 |
+| 16 | BACKSPACE | 9409 | LEFT CONTROL | 9403 | 6 | 457 |
+| 17 | BACKSPACE | 9758 | K | 9886 | 128 | 806 |
+| 18 | BACKSPACE | 8952 | BACKSPACE | 8952 | 0 | 0 |
+| 19 | BACKSPACE | 7856 | N | 8677 | 821 | 1096 |
+| 20 | BACKSPACE | 8645 | N | 8677 | 32 | 307 |
+accuracy = 10.0

@@ -1,0 +1,12 @@
+| Key pressed | Matched | Amplitude |
+|-------------|---------|-----------|
+| Space       | Q       | 11111     |
+| Space       | O       | 12979     |
+| Space       | Q       | 11645     |
+| Space       | Q       | 11870     |
+| Space       | O       | 13554     |
+| Space       | Q       | 10586     |
+| Space       | Q       | 10305     |
+| Space       | Space   | 9021      |
+| Space       | O       | 13639     |
+| Space       | Q       | 11258     |

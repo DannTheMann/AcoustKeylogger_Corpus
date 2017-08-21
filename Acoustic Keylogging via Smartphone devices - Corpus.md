@@ -15,10 +15,9 @@
 2. **Meetings**
 
    * Purpose
+     * Audio files
+     * Meeting summaries
 
-
-   * Audio files
-   * Meeting summaries
 
 3. **Previous Research**
 
@@ -26,7 +25,6 @@
    * Cracking Passwords using keyboard acoustics and language modelling
    * Keyboard Acoustic Emanations
    * Keyboard Acoustic Emanations Revisited
-   * Electronic emanations of wired and wireless keyboards
 
 4. **Hardware**
 
@@ -76,7 +74,6 @@
    * Supervised and unsupervised learning
      * Mean approximation 
      * Kmeans clustering
-   * ​
 
 9. **Development process**
 
@@ -1217,13 +1214,336 @@ With the intention of providing useful interaction when sampling and training th
 
 ### 10.1 Initial Results
 
+Initially I matched using amplitude data alone as a single feature using only 5 keys from the keyboard. Each key was 'louder' than the last given it's location to the microphone on the smartphone. However keys in close proximity sounded too similar to one another.
+
+Using 5 keys I measured these amplitude values and used a range algorithm to then identify them, however this was fairly inaccurate with certain keys being incredibly dubious in variations of their noise. Amplitude was measured from  -32768 to 32767, however for clairvoyance I removed the sign bit of this value and treated them as ranging from 0 - 32768. 
+
+I sampled each key in the subset 20 times and the same was for every form of feature extraction and testing. Considering I had to do this multiple times for each method (sometimes up to 30 keys), I'm open to the idea that more samples would increase my accuracy; however there is a limit to my madness of pressing the same key over and over.
+
+For 5 keys the following amplitude data was recorded:
+
+| Key          | Sample 1 | Sample 2 | Sample 3 | Sample 4 | Sample 5 |
+| ------------ | -------- | -------- | -------- | -------- | -------- |
+| Q            | 12562    | 14131    | 9456     | 11293    | 18231    |
+| O            | 13021    | 12283    | 15820    | 18327    | 11563    |
+| SPACE        | 7829     | 11209    | 13482    | 9232     | 9034     |
+| LEFT-CONTROL | 10203    | 14596    | 13892    | 8180     | 13283    |
+| ENTER        | 17283    | 19232    | 18891    | 17992    | 20003    |
+
+​                       First 5 samples of the following keys from a 5 key subset, reset of data is here
+
+Then using a range algorithm I calculated whether a sample matched a given range of amplitudes associated with a key.
+
+```Java
+
+int sample = Math.abs(getSample()); // Remove sign bit
+
+for(KeyData data : keyRecords){
+    
+  	if(data.getMinRange() <= sample && data.getMaxRange() >= sample){
+        return data.getKey();
+    }
+  
+}
+
+return "No match";
+
+```
+
+However the issue at hand was that this iteratively searched so whether two keys shared boundaries would not matter, only that the first record that was checked would be returned. A distancing algorithm would better suit this and was later used in Mean Approximation. Furthermore as detailed in the results of this calculation - it didn't work. It was to sparse and overlap was a serious problem, especially for close keys. With little to no accuracy present. When matching keys such as Enter, a massive degree of accuracy was present:
+
+| Key pressed | Matched | Amplitude |
+| ----------- | ------- | --------- |
+| Enter       | Enter   | 17,023    |
+| Enter       | Enter   | 18697     |
+| Enter       | Enter   | 19447     |
+| Enter       | Enter   | 19169     |
+| Enter       | Enter   | 17757     |
+| Enter       | Enter   | 16614     |
+| Enter       | Enter   | 17029     |
+| Enter       | Enter   | 17068     |
+| Enter       | Enter   | 17348     |
+| Enter       | Enter   | 18226     |
+
+However, when matching keys such as Space, it was rather the opposite:
+
+| Key pressed | Matched | Amplitude |
+| ----------- | ------- | --------- |
+| Space       | Q       | 11111     |
+| Space       | O       | 12979     |
+| Space       | Q       | 11645     |
+| Space       | Q       | 11870     |
+| Space       | O       | 13554     |
+| Space       | Q       | 10586     |
+| Space       | Q       | 10305     |
+| Space       | Space   | 9021      |
+| Space       | O       | 13639     |
+| Space       | Q       | 11258     |
+
+This can be seen especially due to the matching algorithm matching the first sample that falls within its range without considering neighbouring ranges. Instead of dwelling on this issue, I felt it was time to move onto a more sophisticated solution.
+
+For all result data regarding primitive amplitude evaluation see [here](results/initial).
+
 ### 10.2 Using sophisticated feature extraction
+
+By using Sophisticated feature extraction through subsampling I was able to identify two interesting features of each key, the frequency and magnitude of said frequency. This was applied to two different machine learning approaches, one supervised and the other unsupervised. 
 
 ### 10.3 Mean approximation
 
+Mean approximation is a self-adjusting algorithm intended to weight in the mean average of all incoming samples related to a key. It works by telling the program which key is being pressed and then parsing the sample into the algorithm which adjusts the mean across all samples received for that key. When analysing a distancing algorithm is introduced to find the closest match. On a smaller subset of 5 keys it has a relatively high accuracy of near ~52%, although certain keys fail to match correctly; SPACE being the prominent example.
+
+Sampling 20 times for each key again the outcome was as follows:
+
+| KEY          | MEAN | SAMPLE 1 | SAMPLE 2 | SAMPLE 3 | SAMPLE 4 | SAMPLE 5 |
+| ------------ | ---- | -------- | -------- | -------- | -------- | -------- |
+| Q            | 8682 | 8859     | 8227     | 9087     | 8805     | 8131     |
+| O            | 8927 | 9551     | 8930     | 8297     | 9254     | 8127     |
+| SPACE        | 8917 | 8679     | 9435     | 10499    | 6407     | 11674    |
+| LEFT CONTROL | 8741 | 7870     | 8809     | 8444     | 7747     | 9384     |
+| ENTER        | 8761 | 8868     | 8867     | 8863     | 8749     | 8631     |
+
+Which allowed a fairly decent coverage across the potential frequencies. For example when attempting to match on the key 'Q' the results were as follows.
+
+| Sample No | Key Pressed | Sample | Key Match    | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | ------------ | --------------------- | -------- | ------------ |
+| 1         | Q           | 8447   | Q            | 8682                  | 235      | 235          |
+| 2         | Q           | 8852   | SPACE        | 8917                  | 65       | 170          |
+| 3         | Q           | 8509   | Q            | 8682                  | 173      | 173          |
+| 4         | Q           | 8952   | O            | 8927                  | 25       | 270          |
+| 5         | Q           | 8577   | Q            | 8682                  | 105      | 105          |
+| 6         | Q           | 8972   | O            | 8927                  | 45       | 290          |
+| 7         | Q           | 8325   | Q            | 8682                  | 357      | 357          |
+| 8         | Q           | 8764   | LEFT CONTROL | 8741                  | 23       | 82           |
+| 9         | Q           | 8549   | Q            | 8682                  | 133      | 133          |
+| 10        | Q           | 8740   | LEFT CONTROL | 8741                  | 1        | 58           |
+
+​               First 10 samples of a 20 sample match across a 5 character subset, accuracy ~55%
+
+With Enter being holding the highest accuracy:
+
+| Sample No | Key Pressed | Sample | Key Match    | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | ------------ | --------------------- | -------- | ------------ |
+| 1         | ENTER       | 8785   | ENTER        | 8761                  | 24       | 24           |
+| 2         | ENTER       | 8762   | ENTER        | 8761                  | 1        | 1            |
+| 3         | ENTER       | 8770   | ENTER        | 8761                  | 9        | 9            |
+| 4         | ENTER       | 8779   | ENTER        | 8761                  | 18       | 18           |
+| 5         | ENTER       | 8754   | ENTER        | 8761                  | 7        | 7            |
+| 6         | ENTER       | 8780   | ENTER        | 8761                  | 19       | 19           |
+| 7         | ENTER       | 8748   | LEFT CONTROL | 8741                  | 7        | 13           |
+| 8         | ENTER       | 8781   | ENTER        | 8761                  | 20       | 20           |
+| 9         | ENTER       | 8762   | ENTER        | 8761                  | 1        | 1            |
+| 10        | ENTER       | 8702   | Q            | 8682                  | 20       | 59           |
+
+​                First 10 samples of a 20 sample match across a 5 character subset, accuracy ~80%
+
+Alternatively SPACE still performed sparingly bad:
+
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | --------- | --------------------- | -------- | ------------ |
+| 1         | SPACE       | 8900   | SPACE     | 8917                  | 17       | 17           |
+| 2         | SPACE       | 8681   | Q         | 8682                  | 1        | 236          |
+| 3         | SPACE       | 13403  | O         | 8927                  | 4476     | 4486         |
+| 4         | SPACE       | 9727   | O         | 8927                  | 800      | 810          |
+| 5         | SPACE       | 9223   | O         | 8927                  | 296      | 306          |
+| 6         | SPACE       | 11540  | O         | 8927                  | 2613     | 2623         |
+| 7         | SPACE       | 9075   | O         | 8927                  | 148      | 158          |
+| 8         | SPACE       | 13930  | O         | 8927                  | 5003     | 5013         |
+| 9         | SPACE       | 10301  | O         | 8927                  | 1374     | 1384         |
+| 10        | SPACE       | 12938  | O         | 8927                  | 4011     | 4021         |
+
+​                First 10 samples of a 20 sample match across a 5 character subset, accuracy ~10%
+
+While this was cause for concern I went onto to sample 30 keys across through Means approximation, I hadn't decided on K-means clustering as of yet and wanted to attempt a full solution. 
+
+| Key          | Mean Approximation | Sample 1 | Sample 2 | Sample 3 | Sample 4 | Sample 5 |
+| ------------ | ------------------ | -------- | -------- | -------- | -------- | -------- |
+| A            | 8794               | 7957     | 7819     | 9168     | 7456     | 7109     |
+| B            | 8854               | 7350     | 7696     | 10398    | 9838     | 8455     |
+| C            | 8916               | 7666     | 9696     | 8032     | 9628     | 10646    |
+| D            | 8908               | 8147     | 9641     | 7078     | 8853     | 9181     |
+| E            | 9102               | 7483     | 7128     | 9280     | 9555     | 9154     |
+| F            | 8771               | 9724     | 9492     | 8395     | 7157     | 7326     |
+| G            | 9541               | 7204     | 10775    | 8994     | 10663    | 8845     |
+| H            | 9165               | 10443    | 10643    | 8373     | 8410     | 9981     |
+| I            | 9319               | 7245     | 10514    | 9893     | 9257     | 7406     |
+| J            | 8707               | 8514     | 8855     | 10989    | 7018     | 8173     |
+| K            | 8996               | 8729     | 9430     | 7881     | 8962     | 10134    |
+| L            | 9188               | 9371     | 7938     | 9207     | 9090     | 10846    |
+| M            | 9138               | 7627     | 9576     | 7326     | 10953    | 10329    |
+| N            | 8677               | 7234     | 10420    | 8925     | 9322     | 10452    |
+| O            | 9213               | 8355     | 8094     | 8805     | 8254     | 9610     |
+| P            | 8816               | 10666    | 8543     | 10154    | 9184     | 8152     |
+| Q            | 9300               | 10905    | 10341    | 9338     | 9376     | 10579    |
+| R            | 9095               | 10511    | 7810     | 10162    | 8032     | 8695     |
+| S            | 9090               | 9413     | 8288     | 8442     | 8015     | 8943     |
+| T            | 8792               | 8060     | 7821     | 7566     | 8568     | 10242    |
+| U            | 8709               | 9938     | 7370     | 9380     | 7260     | 9167     |
+| V            | 9000               | 10939    | 9994     | 8940     | 10160    | 9417     |
+| W            | 8949               | 7397     | 8630     | 10464    | 8416     | 10333    |
+| X            | 8958               | 7556     | 7417     | 10905    | 7201     | 7879     |
+| Y            | 8693               | 8945     | 9602     | 7014     | 9108     | 7453     |
+| LEFT CONTROL | 9403               | 10997    | 10613    | 8042     | 10822    | 9982     |
+| SPACE        | 8931               | 7541     | 8558     | 8426     | 8711     | 10456    |
+| ENTER        | 8845               | 7667     | 7036     | 7897     | 9839     | 10668    |
+| BACKSPACE    | 8952               | 8273     | 8613     | 9393     | 7254     | 7167     |
+| NUMPAD ENTER | 9274               | 8583     | 9259     | 7585     | 8729     | 10498    |
+
+Accuracy diminished from around ~52% to ~30% with all key subsets, for example the key 'E' produced the following results:
+
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | --------- | --------------------- | -------- | ------------ |
+| 1         | E           | 9032   | V         | 9000                  | 32       | 70           |
+| 2         | E           | 9070   | S         | 9090                  | 20       | 32           |
+| 3         | E           | 8952   | BACKSPACE | 8952                  | 0        | 150          |
+| 4         | E           | 9085   | S         | 9090                  | 5        | 17           |
+| 5         | E           | 9136   | M         | 9138                  | 2        | 34           |
+| 6         | E           | 9128   | M         | 9138                  | 10       | 26           |
+| 7         | E           | 8977   | K         | 8996                  | 19       | 125          |
+| 8         | E           | 9110   | E         | 9102                  | 8        | 8            |
+| 9         | E           | 9005   | V         | 9000                  | 5        | 97           |
+| 10        | E           | 9019   | V         | 9000                  | 19       | 83           |
+
+​                First 10 samples of a 20 sample match across a 30 character subset, accuracy ~30%
+
+While the key 'S' matched with these results:
+
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | --------- | --------------------- | -------- | ------------ |
+| 1         | S           | 9696   | G         | 9541                  | 155      | 606          |
+| 2         | S           | 9047   | S         | 9090                  | 43       | 43           |
+| 3         | S           | 8429   | N         | 8677                  | 248      | 661          |
+| 4         | S           | 8819   | P         | 8816                  | 3        | 271          |
+| 5         | S           | 9825   | K         | 9886                  | 61       | 735          |
+| 6         | S           | 8174   | N         | 8677                  | 503      | 916          |
+| 7         | S           | 8101   | N         | 8677                  | 576      | 989          |
+| 8         | S           | 8639   | N         | 8677                  | 38       | 451          |
+| 9         | S           | 9951   | K         | 9886                  | 65       | 861          |
+| 10        | S           | 9320   | I         | 9319                  | 1        | 230          |
+
+​                First 10 samples of a 20 sample match across a 30 character subset, accuracy ~10%
+
+Looking at previous trending keys, such as ENTER and SPACE we see that Enter amazingly held onto it's high accuracy and was accurate around ~55%.
+
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | --------- | --------------------- | -------- | ------------ |
+| 1         | ENTER       | 8845   | ENTER     | 8845                  | 0        | 0            |
+| 2         | ENTER       | 8810   | P         | 8816                  | 6        | 35           |
+| 3         | ENTER       | 8846   | ENTER     | 8845                  | 1        | 1            |
+| 4         | ENTER       | 8804   | A         | 8794                  | 10       | 41           |
+| 5         | ENTER       | 8847   | ENTER     | 8845                  | 2        | 2            |
+| 6         | ENTER       | 8831   | ENTER     | 8845                  | 14       | 14           |
+| 7         | ENTER       | 8809   | P         | 8816                  | 7        | 36           |
+| 8         | ENTER       | 8842   | ENTER     | 8845                  | 3        | 3            |
+| 9         | ENTER       | 8831   | ENTER     | 8845                  | 14       | 14           |
+| 10        | ENTER       | 8832   | ENTER     | 8845                  | 13       | 13           |
+
+​                First 10 samples of a 20 sample match across a 30 character subset, accuracy ~55%
+
+While space completely diminished into an unidentifiable mess:
+
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- | ----------- | ------ | --------- | --------------------- | -------- | ------------ |
+| 1         | SPACE       | 9098   | R         | 9095                  | 3        | 167          |
+| 2         | SPACE       | 9131   | M         | 9138                  | 7        | 200          |
+| 3         | SPACE       | 9046   | S         | 9090                  | 44       | 115          |
+| 4         | SPACE       | 9117   | E         | 9102                  | 15       | 186          |
+| 5         | SPACE       | 8960   | X         | 8958                  | 2        | 29           |
+| 6         | SPACE       | 8995   | K         | 8996                  | 1        | 64           |
+| 7         | SPACE       | 9009   | V         | 9000                  | 9        | 78           |
+| 8         | SPACE       | 8994   | K         | 8996                  | 2        | 63           |
+| 9         | SPACE       | 9015   | V         | 9000                  | 15       | 84           |
+| 10        | SPACE       | 8965   | X         | 8958                  | 7        | 34           |
+
+​                First 10 samples of a 20 sample match across a 30 character subset, accuracy ~0%
+
+There are large number of potential problems here ranging from the feature extraction design to live audio analysis itself. The distance algorithm could be adapted to focus on the closest set of sub means of a key although this would be exponential expensive in terms of supervised training power.
+
+For all result data regarding Mean Approximation see [here](results/key approx/).
+
+Owing to this lack of accuracy I decided to focus on K-means clustering in an attempt to follow in the previous footsteps of researchers. I initially didn't plan to as the complexity of it was beyond the scope of my knowledge. However as mentioned the accuracy was too low for a fair representation of the outcome of the project.
+
 ### 10.4 K-means clustering
 
-###10.5 Cryptographic substitution frequency analysis
+K-means is a unsupervised machine learning technique to analyse data and trends, often used in marketing and business analytics. Unlike mean approximation where I personally instructed which key was being trained, K-means does not provide this data. Instead data is evaluated and attached to clusters which can be used to identify trends. An initial value 'K' is required for K-means clustering, K-means weighs and organised itself through an iterative design. K is given at the creation of the algorithm and provides the number of clusters, in the case of this application I'm identifying 30 different keys on a keyboard. Each cluster has a centroid that is initially randomly generated and plotted which is then used as a means to relatively control and asses each data point through additional sample data being plotted. Centroids update their position through each iteration adapting the K-means model over iterations.
+
+* For a detailed explanation on K-means clustering, see [here](https://www.datascience.com/blog/introduction-to-k-means-clustering-algorithm-learn-data-science-tutorials).
+* In designing the Java implementation I utilised these example classes [here](http://www.dataonfocus.com/k-means-clustering-java-code/).
+
+In this case, the results come in the form of graphs as I'm measuring ~600 data points; 20 samples per key, with 30 keys.
+
+![overlay](results/kmeans/training/overlay.png)
+
+Each cluster represents an individual key based on a 2 dimensional dataset of X and Y. Where X represents the frequency and Y magnitude  Each cluster has a **centroid**, which is mapped as follows:
+
+![overlay2](results/kmeans/training/overlay2.png)
+
+In terms of graphing, the values from samples had to be ranged in the K-means model. ![scaleform](results/kmeans/training/scaleform.PNG)Where:
+
+* v = Sample data
+* min = Minimum value of original range
+* max = Maximum value of original range
+* new_max = Maximum value of new range
+* new_min = Minimum value of new range
+
+These values equate to:
+
+* v = Varying between 7600 - 11000 
+* min = 7600
+* max = 11000
+* new_max = 1024
+* new_min = 1024
+
+Without this new range an issue would arise whether some clusters would absorb other clusters data and essentially starve the surrounding clusters. It's a necessary requirement for accurately mapping all keys across datasets.
+
+While K-means is potentially more accurate it is far more useful for **pre-recorded** analysis rather than live-recorded analysis as the learning outcome of live-recorded can **poison** the sample data. This occurs when identifying a sample as the cluster centroid of a cluster will change plot based on the data given. If the incorrect data is fed into the classifier then that cluster will be poisoned.
+
+K-means clustering is better at classifying the different groups of key samples but analysing live-data becomes very difficult as the the need to update data as it's often miscalculated with a ~50% accuracy. This level of accuracy is calculated on the principle that when evaluating keystrokes with K-means we must assume that the classifier distributes the correct cluster amongst many varying keysets of data. When performing the same tests used on Mean approximation often the most common cluster appearing can appear on other tests for different keys. 
+
+For example, classifying the key 'B' and testing against it shows:
+
+| Sample No | Key Pressed | Sample X | Sample Y | New Range X | New Range Y | Cluster |
+| --------- | ----------- | -------- | -------- | ----------- | ----------- | ------- |
+| 1         | B           | 8615     | 46805    | 305.694     | 737.359     | 24      |
+| 2         | B           | 9211     | 42338    | 485.195     | 666.986     | 1       |
+| 3         | B           | 9193     | 44126    | 479.774     | 695.154     | 1       |
+| 4         | B           | 9112     | 42880    | 455.379     | 675.525     | 1       |
+| 5         | B           | 9338     | 45318    | 523.445     | 713.933     | 7       |
+| 6         | B           | 8668     | 43011    | 321.656     | 677.589     | 24      |
+| 7         | B           | 8828     | 45001    | 369.845     | 708.939     | 24      |
+| 8         | B           | 9345     | 42537    | 525.553     | 670.121     | 7       |
+| 9         | B           | 9150     | 43168    | 466.824     | 680.062     | 1       |
+| 10        | B           | 8787     | 44625    | 357.496     | 703.015     | 24      |
+
+​                                         First 10 samples across 20 samples for K-means of 30 key subset.
+
+The cluster 1 is the most prominent for the key 'B' and then the same cluster appears prominent for 'BACKSPACE':
+
+| Sample No | Key Pressed | Sample X | Sample Y | New Range X | New Range Y | Cluster |
+| --------- | ----------- | -------- | -------- | ----------- | ----------- | ------- |
+| 1         | BACKSPACE   | 9362     | 44110    | 530.673     | 694.902     | 1       |
+| 2         | BACKSPACE   | 9139     | 46050    | 463.511     | 725.465     | 1       |
+| 3         | BACKSPACE   | 9320     | 43463    | 518.024     | 684.709     | 1       |
+| 4         | BACKSPACE   | 8977     | 47639    | 414.720     | 750.497     | 1       |
+| 5         | BACKSPACE   | 9058     | 47206    | 439.115     | 743.676     | 1       |
+| 6         | BACKSPACE   | 9081     | 46432    | 446.042     | 731.483     | 1       |
+| 7         | BACKSPACE   | 9140     | 44028    | 463.812     | 693.610     | 1       |
+| 8         | BACKSPACE   | 9284     | 45877    | 507.181     | 722.739     | 1       |
+| 9         | BACKSPACE   | 9114     | 49587    | 455.981     | 781.186     | 22      |
+| 10        | BACKSPACE   | 9360     | 45158    | 530.071     | 711.412     | 1       |
+
+​                                         First 10 samples across 20 samples for K-means of 30 key subset.
+
+Although this is a rare occurrence, it still produces problems for classification as this suggests that the the classification of B and BACKSPACE are the same. 
+
+For all result data regarding K-means clustering see [here](results/kmeans/).
+
+## 10. Conclusion
+
+What can be deciphered from the results here is that K-means can offer a better analysis of the results but lacks the capability to identify pre-recorded audio without the concern of poisoning the training data without a rollback capability that iterates and then reverses the condition of that iteration. Mean approximation while somewhat effective, if expanded upon could provide a more concrete analysis of a advanced subset of keys from the keyboard; in it's current state it lacks the ability to accurately determine keys of large variations. 
+
+The lack of accuracy leads to concerns over the capabilities of the feature extraction element that the given operating systems functionality lacks coherent ability to actively sample and extract; being too primitive for these sophisticated requirements. The use of pre-recorded aforementioned does not help the case as pre-recorded analysis is limited to the sampling period potentially cutting off valuable data from the total sample. 
+
+
 
 
 

@@ -1,0 +1,12 @@
+| Key pressed | Matched | Amplitude |
+|-------------|---------|-----------|
+| Enter       | Enter   | 17,023    |
+| Enter       | Enter   | 18697     |
+| Enter       | Enter   | 19447     |
+| Enter       | Enter   | 19169     |
+| Enter       | Enter   | 17757     |
+| Enter       | Enter   | 16614     |
+| Enter       | Enter   | 17029     |
+| Enter       | Enter   | 17068     |
+| Enter       | Enter   | 17348     |
+| Enter       | Enter   | 18226     |

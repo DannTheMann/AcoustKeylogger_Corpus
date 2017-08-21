@@ -1,0 +1,23 @@
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| --------- |
+| 1 | LEFT CONTROL | 8838 | ENTER | 8845 | 7 | 565 |
+| 2 | LEFT CONTROL | 9582 | G | 9541 | 41 | 179 |
+| 3 | LEFT CONTROL | 8856 | B | 8854 | 2 | 547 |
+| 4 | LEFT CONTROL | 9670 | G | 9541 | 129 | 267 |
+| 5 | LEFT CONTROL | 8378 | N | 8677 | 299 | 1025 |
+| 6 | LEFT CONTROL | 8252 | N | 8677 | 425 | 1151 |
+| 7 | LEFT CONTROL | 8334 | N | 8677 | 343 | 1069 |
+| 8 | LEFT CONTROL | 9795 | K | 9886 | 91 | 392 |
+| 9 | LEFT CONTROL | 9411 | LEFT CONTROL | 9403 | 8 | 8 |
+| 10 | LEFT CONTROL | 9404 | LEFT CONTROL | 9403 | 1 | 1 |
+| 11 | LEFT CONTROL | 8500 | N | 8677 | 177 | 903 |
+| 12 | LEFT CONTROL | 10117 | K | 9886 | 231 | 714 |
+| 13 | LEFT CONTROL | 10230 | K | 9886 | 344 | 827 |
+| 14 | LEFT CONTROL | 8136 | N | 8677 | 541 | 1267 |
+| 15 | LEFT CONTROL | 7998 | N | 8677 | 679 | 1405 |
+| 16 | LEFT CONTROL | 8019 | N | 8677 | 658 | 1384 |
+| 17 | LEFT CONTROL | 8389 | N | 8677 | 288 | 1014 |
+| 18 | LEFT CONTROL | 8316 | N | 8677 | 361 | 1087 |
+| 19 | LEFT CONTROL | 9572 | G | 9541 | 31 | 169 |
+| 20 | LEFT CONTROL | 8731 | U | 8709 | 22 | 672 |
+accuracy = 10.0

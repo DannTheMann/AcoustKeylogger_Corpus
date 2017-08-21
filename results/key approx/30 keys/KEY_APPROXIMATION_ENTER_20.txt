@@ -1,0 +1,23 @@
+| Sample No | Key Pressed | Sample | Key Match | Key Match Mean Approx | Distance | RealDistance |
+| -------------------------------- |
+| 1 | ENTER | 8845 | ENTER | 8845 | 0 | 0 |
+| 2 | ENTER | 8810 | P | 8816 | 6 | 35 |
+| 3 | ENTER | 8846 | ENTER | 8845 | 1 | 1 |
+| 4 | ENTER | 8804 | A | 8794 | 10 | 41 |
+| 5 | ENTER | 8847 | ENTER | 8845 | 2 | 2 |
+| 6 | ENTER | 8831 | ENTER | 8845 | 14 | 14 |
+| 7 | ENTER | 8809 | P | 8816 | 7 | 36 |
+| 8 | ENTER | 8842 | ENTER | 8845 | 3 | 3 |
+| 9 | ENTER | 8831 | ENTER | 8845 | 14 | 14 |
+| 10 | ENTER | 8832 | ENTER | 8845 | 13 | 13 |
+| 11 | ENTER | 8848 | ENTER | 8845 | 3 | 3 |
+| 12 | ENTER | 8815 | P | 8816 | 1 | 30 |
+| 13 | ENTER | 8818 | P | 8816 | 2 | 27 |
+| 14 | ENTER | 8771 | F | 8771 | 0 | 74 |
+| 15 | ENTER | 8838 | ENTER | 8845 | 7 | 7 |
+| 16 | ENTER | 8774 | F | 8771 | 3 | 71 |
+| 17 | ENTER | 8849 | ENTER | 8845 | 4 | 4 |
+| 18 | ENTER | 8830 | P | 8816 | 14 | 15 |
+| 19 | ENTER | 8764 | F | 8771 | 7 | 81 |
+| 20 | ENTER | 8843 | ENTER | 8845 | 2 | 2 |
+accuracy = 55.00000000000001

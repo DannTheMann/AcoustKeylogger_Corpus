@@ -4,118 +4,115 @@
 
 # Acoustic Keylogging via Smartphone devices - Corpus
 
+<a name="contents"></a>
+
 ## Contents
 
-1. **Introduction**
+1. **[Introduction](#introduction)**
 
-   * Author & date
-   * Abstract and Aim
-   * Special Thanks
+   * [Author & date](#author)
+   * [Abstract and Aim](#abstract)
+     * [Abstract](#abstract_abs)
+     * [Aim](#abstract_aim)
+   * [Special Thanks](#thanks)
 
-2. **Meetings**
+2. **[Meetings](#meetings)**
 
-   * Purpose
-     * Audio files
-     * Meeting summaries
+   * [Purpose](#purpose)
+     * [Audio files](#audio)
+     * [Meeting summaries](#meeting_sum)
 
 
-3. **Previous Research**
+3. **[Previous Research](#research)**
 
-   * Accelerometer Side Channel Attacks
-   * Cracking Passwords using keyboard acoustics and language modelling
-   * Keyboard Acoustic Emanations
-   * Keyboard Acoustic Emanations Revisited
+   * [Accelerometer Side Channel Attacks](#asca)
+   * [Cracking Passwords using keyboard acoustics and language modelling](#crackingpass)
+   * [Keyboard Acoustic Emanations](#kae)
+   * [Keyboard Acoustic Emanations Revisited](#kaer)
+4. **[Hardware](#hardware)**
 
-4. **Hardware**
+   * [Smartphone Technology](#smartphone_tech)
+     * [Microphone](#tech_mic)
+   * [The Android Operating System](#android_os)
+     * [Android 'Java'](#android_java)
+   * [Keyboard Hardware](#keyboard_tech)
+5. [**Testing conditions**](#testing_con)
 
-   * Smartphone Technology
-     * Microphone
-   * The Android Operating System
-     * Android 'Java'
-   * Keyboard Hardware
+   * [Constraints](#constraints_keyboard)
+     * [Keyboard ](#constraints_keyboard)
+       * [Location](#constraints_keyboard_location)
+       * [Membrane vs Mechanical ](#constraints_keyboard_mech)
+     * [Smartphone ](#constraints_phone)
+       * [Operating System ](#constraints_phone_os)
+       * [Microphone](#constraints_phone_mic)
+     * [Lab conditions](#constraints_lab)
+   * [Variables](#variables)
+     * [Background noise](#var_bn)
+     * [Phone model](#var_pm)
+     * [Location of phone](#var_location)
+     * [Keyboard](#var_key)
+     * [Impact strength & location](#var_impact)
+6. [**Testing methodology**](#testing_meth)
 
-5. **Testing conditions**
+   * [Initial testing plans](#testing_init)
+   * [Testing process](#testing_proc)
+     * [Small subset](#testing_small)
+     * [Larger subset](#testing_large)
+7. [**Feature extraction**](#feature_extract)
 
-   * Constraints
-     * Keyboard 
-       * Location
-       * Membrane vs Mechanical 
-     * Smartphone 
-       * Operating System 
-       * Microphone
-     * Lab conditions
-   * Variables
-     * Background noise
-     * Phone model
-     * Location of phone
-     * Keyboard 
-     * Impact strength & location
+   * [Features](#extract_feat)
+     * [Amplitude](#extract_amp)
+     * [Frequency](#extract_freq)
+   * [Pre-recorded audio extraction](#extract_prae)
+   * [Live audio extraction](#extract_lae) 
+   * [Isolating peaks](#extract_ip)
+     * [Subsampling](#extract_sample)
+8. [**Feature Analysis**](#feature_analysis)
 
-6. **Testing methodology**
+   * [Simple comparison](#feature_simple)
+   * [Supervised and unsupervised learning](#feature_su)
+     * [Mean approximation](#feature_ma) 
+     * [Kmeans clustering](#feature_kmeans)
+9. [**Development process**](#dev)
 
-   * Initial testing plans
-   * Testing process
-     * Small subset
-     * Larger subset
+   * [Development process ideology](#dev_pro)
+     * [Iterative design](#dev_id)
+     * [Version control](#dev_vc)
+     * [IDE (Integrated Development Environment)](#dev_ide)
+   * [Program Steps](#dev_ps)
+     * [Initial Setup](#dev_is)
+       * [Launch](#dev_lau)
+       * [GUI building](#dev_guib)
+       * [Dataset loading](#dev_dl)
+       * [Thread establishment](#dev_te)
+     * [Feature Extraction](#dev_fe)
+     * [Feature Analysis](#dev_fa)
+     * [Supervised/Unsupervised Learning](#dev_sul)
+       * [Mean approximation](#dev_ma)
+       * [Kmeans clustering](#dev_kc)
+     * [Storing results](#dev_sr)
+   * [Android API](#dev_aa)
+     * [API Permissions](#dev_ap)
+     * [AudioRecord](#dev_ar)
+     * [XML Design Layouts](#dev_xdl)
+   * [GUI functionality](#dev_guif)
+     * [Buttons](#dev_b)
+     * [Visualising](#dev_gui_vis)
+10. [**Results**](#results)
 
-7. **Feature extraction**
-
-   * Features
-     * Amplitude
-     * Frequency
-   * Pre-recorded audio extraction
-   * Live audio extraction 
-   * Isolating peaks
-     * Subsampling
-
-8. **Feature Analysis**
-
-   * Simple comparison
-   * Supervised and unsupervised learning
-     * Mean approximation 
-     * Kmeans clustering
-
-9. **Development process**
-
-   * Development process ideology
-     * Iterative design
-     * Version control
-     * IDE (Integrated Development Environment)
-   * Program functionality
-     * Learning capabilities
-     * Data management
-     * Visualisation
-   * Program Steps
-     * Initial Setup
-       * Launch
-       * GUI building
-       * Dataset loading
-       * Thread establishment
-     * Feature Extraction
-     * Feature Analysis
-     * Supervised/Unsupervised Learning
-       * Mean approximation
-       * Kmeans clustering
-     * Storing results
-   * Android API
-     * API Permissions
-     * AudioRecord
-     * XML Design Layouts
-   * GUI functionality
-     * Buttons
-     * Visualising
-
-10. **Results**
-
-  * Initial results
-  * Using sophisticated feature extraction
-  * Mean approximation
-  * Kmeans clustering
-  * Cryptographic substitution frequency analysis
+  * [Initial results](#results_init)
+  * [Using sophisticated feature extraction](#results_fe)
+  * [Mean approximation](#results_ma)
+  * [Kmeans clustering](#results_kc)
+11. [**Conclusion**](#conclusion)
 
 ---
 
+<a name="Introduction"></a>
+
 ## 1. Introduction
+
+<a name="author"></a>
 
 ###1.1 Author & Date
 
@@ -123,7 +120,11 @@ This project was started in January of 2017 and finished in August of 2017, with
 
 The author of this corpus is Daniel Jack Andrews, if you have any queries you can contact the author at [dja33@kent.ac.uk](mailto:dja33@kent.ac.uk).
 
+<a name="abstract"></a>
+
 ### 1.2 Abstract & Aim
+
+<a name="abstract_abs"></a>
 
 #### 1.2.1 Abstract
 
@@ -133,9 +134,13 @@ Considering this the potential power behind the average smartphone is huge, even
 
 The dissertation that this corpus supports aims to challenge whether a modern day smartphone can acoustically eavesdrop on a keyboard through side-channels in the acoustic noise produced by pressing the keys on the board.
 
+<a name="abstract_aim"></a>
+
 #### 1.2.2 Aim
 
 This corpus aims to provide and support the dissertation associated with it such that any reference of relation to the material, results or development of the dissertations logic, applicants or findings can be backed up and catalogued. This corpus will skim over certain aspects of the project, where instead these details can be found in the bulk of the dissertation. Instead this corpus aims to provide a uniformed catalogue of data used as referencing points in the dissertation thesis itself.
+
+<a name="thanks"></a>
 
 ### 1.3 Special Thanks
 
@@ -155,11 +160,17 @@ This project could not have been completed without the following people and grou
 
 ---
 
+<a name="meetings"></a>
+
 ## 2. Meetings
+
+<a name="purpose"></a>
 
 ### 2.1 Purpose
 
 On several occasions I met my supervisor Budi Arief to discuss the project undertaken. These meetings were intended to provide insight into the current status of the project while assisting in any issues and providing other forms of support to the project.
+
+<a name="audio"></a>
 
 ### 2.2 Audio recordings
 
@@ -170,6 +181,8 @@ Unfortunately I have only three audio recorded sessions as my audio recording eq
 * 14/8/2017 (On Skype) - [View](https://youtu.be/ac2mPSi0TXU)
 
 In-between June and August I lost two of my recordings. 
+
+<a name="meeting_sum"></a>
 
 ### 2.3 Meeting summaries
 
@@ -302,7 +315,11 @@ The he results of kmeans clustering were more accurate than mean average, kmeans
 
 ---
 
+<a name="research"></a>
+
 ## 3. Research
+
+<a name="asca"></a>
 
 ### 3.1 Accelerometer Side Channel Attacks
 
@@ -345,6 +362,8 @@ Conclusively the paper ends by explaining that a side-channel attack is possible
 
 However this research focuses on inferring data from then touchscreen and does not guarantee that the same can be used for keystrokes on a physical keyboard. (As it later turns out, this is the true that Android is too limited to be able to deduce another features alone from vibrations for keystroke analysis)
 
+<a name="kae"></a>
+
 ###3.2 Keyboard Acoustic Emanations 
 
 [Paper](research/KeyboardAcousticEmanations.pdf)
@@ -367,6 +386,8 @@ comfort these provide to users.
 
 The most detailed aspect of this research is the 'touch-peak' of 2-3ms and training data, they utilise important methods that can be followed up on for my work. I plan to follow a similar pattern of testing two individual keys, then 5, then a range of keys. 
 
+<a name="kaer"></a>
+
 ### 3.3 Keyboard Acoustic Emanations Revisited
 
 [Paper](research/KeyboardAcousticEmanationsRevisited.pdf)
@@ -386,6 +407,8 @@ which helps the classifier to identify potential random text at a later for pass
 **Conclusion**
 
 The big push in this research is the use of Mel-cepstrum over FFT, although this technique is superior at analysis it is far more complex and could potentially be beyond my capabilities but is worth noting in detail. FFT is an easy technique to implement while Mel-cepstrum has been notably used in voice recognition software. They utilise clustering (see later on kmeans clustering) to classify keystrokes but describe this technique as 'standard clustering methods' (later research explains more detail kmeans clustering).
+
+<a name="crackingpass"></a>
 
 ### 3.4 Cracking Passwords using keyboard acoustics and language modelling
 
@@ -408,7 +431,11 @@ The paper explains that keystrokes often fall within the frequency range of 400-
 
 Overall I have provided a small subset of Kellys early analysis in his paper but the important details like in his use of feature extraction via FFT and Mel-cepstrum frequency analysis. The use of kmeans clustering over supervised learning is an interesting concept but I hope to implement both to verify these findings myself as machine learning is not a concept I am personally too familiar with.
 
+<a name="hardware"></a>
+
 ## 4. Hardware
+
+<a name="smartphone_tech"></a>
 
 ### 4.1 Smartphone Technology
 
@@ -428,6 +455,8 @@ At later stages I attempted to use a Samsung S6 Edge in place of the S4 but foun
 
 ​                                                                         (Samsung Galaxy S6 Edge)
 
+<a name="tech_mic"></a>
+
 #### Microphone
 
 The important aspect of the phone itself is the Microphone with the focus of the hardware being on it's capabilities. Now unsurprisingly Samsung do not provide the specifications of the microphone that other manufactures will, normally we can expect a datasheet reflecting the quality of the microphone but in this case nothing is present. The model of phone is referred to the Samsung I9505 Galaxy S4 only provides minimal specifications on what the phone is capable of doing; such as wireless (WiFi) specifications.
@@ -441,6 +470,8 @@ We can prove this further by demonstrating using a spectral analyser that the ph
 ![spectro](hardware/spectro.png)
 
 Therefore I knew that the phones microphone should be more than capable of identifying the keystrokes of the keyboard. However the accuracy may not be as high as more omnidirectional and precise microphones.
+
+<a name="android_os"></a>
 
 ### 4.2 The Android Operating System
 
@@ -457,9 +488,13 @@ As mentioned prior this operating system designed by Google is found on more sma
 
 So by testing both these devices with the developed application we can sweep around 40% of all Android operating systems and in-between those too (between Android 5.x - 7.x).
 
+<a name="android_java"></a>
+
 #### Android Java
 
 Android uses 'java' as it's primary programming interaction. Although it does not use the JVM (Java virtual machine) or bytecode like normal Java applications instead opting for it's own 'Dalvik' machine and bytecode. It provides the same interaction that Java does and is synonymously known as Java but it's not entirely the same working principle. Although for the purpose of this project, it won't make much difference in the long run.
+
+<a name="keyboard_tech"></a>
 
 ### 4.3 Keyboard Hardware
 
@@ -473,7 +508,11 @@ The keyboard itself is the Razor Black Widow Ultimate 2014 Edition mechanical ke
 
 Another keyboard is present but this one is a simple membrane keyboard and exists for purely for varying testing conditions.
 
+<a name="testing_con"></a>
+
 ## 5. Testing conditions
+
+<a name="constraints"></a>
 
 ### 5.1 Constraints
 
@@ -481,9 +520,13 @@ The testing behind the project follows tight constraints in order to control the
 
 For the **methodology** behind the testing see testing methodology, section 6. 
 
+<a name="constraints_keyboard"></a>
+
 #### 5.1.1 Keyboard
 
 As mentioned prior the keyboard used in this work was a Razor Black Widow Ultimate 2014 Edition Keyboard, a mechanical gaming keyboard with macro keys. Designed for multi-purpose scenarios. 
+
+<a name="constraints_keyboard_location"></a>
 
 ###### 5.1.1.1 Location
 
@@ -492,6 +535,8 @@ The location of the keyboard is as relevant as the location of the phone, both n
 Using a laser cut frame from wood I was able to fix the location of the keyboard at all times as with the location of the smartphone. For more information on the wooden frame see section **5.1.3**.
 
 ![frame_keyboard](/testing_conditions/frame_keyboard.JPG)
+
+<a name="constraints_keyboard_mech"></a>
 
 ###### 5.1.1.2 Membrane vs Mechanical
 
@@ -505,13 +550,19 @@ For distinct differences in membrane versus mechanical see the diagram below.
 
 As can be seen, mechanical hits the backplate fierce and hard whereas membrane is a soft flexible impact and may vary on the noise given.
 
+<a name="constraints_phone"></a>
+
 ##### 5.1.2 Smartphone
 
 As mentioned prior the smartphone used was the Samsung Galaxy S4 primarily with second-hand testing on an S6 Edge. 
 
+<a name="constraints_keyboard_os"></a>
+
 ###### 5.1.2.1 Operating System
 
 Albeit the operating system used in this case fairly universal and as such is not so much a constraint as a benefit. However it must be said that the operating system used was Android and not another, even then versions 5.0.1 (Lollipop) and 7.0 (Nougat).
+
+<a name="constraints_keyboard_mic"></a>
 
 ###### 5.1.2.2 Microphone
 
@@ -523,6 +574,8 @@ When testing I had to be cautious with the wooden frame not to obstruct the micr
 
 * Samsung S4 sitting in frame, notice slots next to the bottom and/or top of the device to provide space                  for the microphones.
 * The phone can be positioned in 8 different locations for testing purposes.               
+
+<a name="constraints_lab"></a>
 
 ##### 5.1.3 Lab conditions
 
@@ -536,25 +589,37 @@ I created a wooden frame to fix the locations of the smartphone and the keyboard
 
 ​                                              The frame with neither keyboard or smartphone present.
 
+<a name="variables"></a>
+
 ### 5.2 Variables
 
 Throughout the testing their are variables that exceed my control, these variables may influence the outcome of the results of testing and are mentioned below.
+
+<a name="var_bn"></a>
 
 #### 5.2.1 Background noise
 
 As mentioned I live next to Gatwick and even before then I lived with 5 other students. Background noise from aircraft, farm animals, people, floorboards creaking etc are all likely to disturb the accuracy of the tests. I attempted to minimize the effects of this by only recording at dormant times (Where little people are around) and in-between aircrafts landing and taking off. You can see in my testing recordings that I actually pause before proceeding to training more data as to avoid specifically aircraft interference. 
 
+<a name="var_pm"></a>
+
 #### 5.2.2 Phone model
 
 While the phone model in my project is fixed it's important to note that this is a variable in the real world and may not reflect all potential outcomes of the real world under similar testing procedures. I did utilise 2 different makes of Samsung smartphones to try and demonstrate this but other manufactures or entirely different phones in general may be impacted by these testing conditions.
+
+<a name="var_location"></a>
 
 #### 5.2.3 Location of phone
 
 The phone can change it's location as mentioned prior about the frame although this variable is more of a constant set where there are only 8 potential locations for the phone to be, however depending on the location it is more than likely to change the values associated with the results.
 
+<a name="var_key"></a>
+
 #### 5.2.4 Keyboard
 
 While in the constants of this testing I will be using the Razor mechanical keyboard, in the real world the keyboard being monitored may be of varying size or style. It's important to note that this sampling keylogger will only be trained to this specific keyboard and holds no promises on it's capability of identifying keys from other keyboards.
+
+<a name="var_impact"></a>
 
 #### 5.2.5 Impact strength & location
 
@@ -562,7 +627,11 @@ When you press a key on a keyboard you may vary the strength and location of you
 
 The impact strength itself will be controlled as best as plausible in the testing environment, in the real world this strength may vary based on user, keyboard, attitude and much more. 
 
+<a name="testing_meth"></a>
+
 ## 6. Testing methodology
+
+<a name="testing_init"></a>
 
 ### 6.1 Initial testing plans
 
@@ -571,6 +640,8 @@ As shown in the meetings with Budi, the plans for testing came from first analys
  * Q, SPACE, LEFT-CONTROL, O, ENTER
 
 Each key is strategically located at different points on the keyboard offering varying size and range from the smartphone. We agreed that I would press each key 20 times and record the results for comparison later on. Later we would extend the character set beyond this.
+
+<a name="testing_proc"></a>
 
 ### 6.2 Testing process
 
@@ -599,6 +670,8 @@ Throughout later stages I trained my program by following an almost identical se
 
 When developing the application I initially only tested two keys, Enter and Space as to make certain that my feature extraction was able to clearly identify the two different keys. This was done as previous researchers had acted similarly by first measuring two distinct keys and making certain their system worked.
 
+<a name="testing_small"></a>
+
 #### Small subset
 
 The small subset consisted of:
@@ -613,6 +686,8 @@ And was used for testing early implementations of the device. It would take time
 
 * SPACE
 * ENTER
+
+<a name="testing_large"></a>
 
 #### Large subset
 
@@ -652,7 +727,11 @@ The large subset consisted of:
 
 Again not every key was mapped but in the final rendition all of the keys above were mapped and trained against. The results for these findings can be found in the results section of the paper.
 
+<a name="feature_extract"></a>
+
 ## 7. Feature Extraction
+
+<a name="extract_feat"></a>
 
 ### 7.1 Features
 
@@ -664,11 +743,15 @@ Features can consist of any characteristic that defines a key. In the case of th
 
 Where possible other characteristics can be used.
 
+<a name="extract_amp"></a>
+
 #### 7.1.1 Amplitude
 
 Amplitude itself is a value of a single period taken from a measurement of sound in this case. It defines the literal amplitude of the noise. Amplitude itself can have multiple measurements worth extracting for the purpose of feature analysis and in the case of the application I measure what is know as the peak amplitude; the maximum amplitude of a discrete set of amplitude values associated with an audio sample.
 
 Amplitude measurements in the Android operating system from audio can vary from negative to positive and represent the elements of a sinewave over a period of time. In the case of the program we are sampling at 44,100 Hz per second and therefore have a set of 44,100 amplitude values associated to that second. 
+
+<a name="extract_freq"></a>
 
 #### 7.1.2 Frequency
 
@@ -678,13 +761,19 @@ A Fourier transform is used on a sequence of 'raw' audio samples to produce a ma
 
 In the case of the application, I was interested in prominent frequencies (The resonating frequency) and it's associated magnitude. Both of which can be used to identify peaks and trends in key presses.
 
+<a name="extract_prae"></a>
+
 ### 7.2 Pre-recorded audio extraction
 
 All previous research focused on pre-recorded analysis, often working on the same data over the entire period. Some research utilised 10 minute recordings and worked on analysing them more critically over time while others only focused on small segments of 10 characters and identifying SSH passwords. All this research used custom computers and hardware to identify and accurately build upon datasets. In the case of my project is was limited to the smartphone at hand and the data had to be analysed then and there.
 
+<a name="extract_lae"></a>
+
 ### 7.3 Live audio extraction
 
 I decided to focus on live audio extraction as previously all forms of research had utilised pre-recorded analysis. Not only would live-analysis be more difficult but would also provide an element that hasn't been investigated yet. Live audio analysis without a doubt showed inconsistencies compared to pre-recorded and its accuracy severely dropped although this could owe to the smartphone at hand as opposed to a custom machine performing post analysis.
+
+<a name="extract_ip"></a>
 
 ### 7.4 Isolating peaks
 
@@ -692,21 +781,31 @@ The microphone API on the Android platform provided the potential for the progra
 
 The Android API limited the analysis of live audio by only allowing the user to store the last N values in a buffer to be analysed such that you could record as much as you wanted but could only analyse so much. Due to sampling rate being 44,100 Hz I decided to buffer an array of size 44,100Hz matching the sampling frequency such that I measured the entire second in it's full scope. This entire second could then be subsampled by isolating the peaks between key presses made in that singular second. 
 
+<a name="extract_sample"></a>
+
 #### 7.5 Subsampling
 
 First I had to isolate each peak and subsample it. By identifying the highest amplitude in a sample iteratively and then subsampling that index by negative N indices and positive N indices I was able to subsample multiple key presses in one second. 
 
 Once isolated and subsampled I then fed these individual subsamples into my feature analysis network, in this case it was either a supervised or unsupervised training network. 
 
+<a name="feature_analysis"></a>
+
 ## 8. Feature Analysis
+
+<a name="feature_simple"></a>
 
 ### 8.1 Simple comparison
 
 Initially I tried performing a simple comparison, storing a relative frequency to each key and identifying whether the isolated subsamples prominent frequency matched the relative frequency. This was poorly defined and provided very little accuracy often mistaking keys for completely irrelevant or unbelievably different keys all together.
 
+<a name="feature_su"></a>
+
 ### 8.2 Supervised and unsupervised learning
 
 Two forms of machine learning were applied to this project both supervised and unsupervised. 
+
+<a name="feature_ma"></a>
 
 #### 8.2.1 Mean approximation
 
@@ -714,31 +813,50 @@ This was a general supervised machine learning object-orientated approach and wa
 
 In a controlled environment where nothing was impacting the circumstances at hand this performed fairly well with an accuracy of around ~52%. See the results section for more details.
 
+<a name="feature_kmeans"></a>
+
 #### 8.2.2 K-means clustering
 
 Previous researchers used K-means clustering as an unsupervised method of categorising their keystrokes from feature analysis. The unsupervised machine learning technique revolves around the value of **K** which is a defined number of clusters that is provided by the programmer and then parsing a series of datasets (normally onto a 2d plane) iteratively until they are completely categorised into their respective clusters. This requires the use of **centroids** which act as the central point for each cluster. Each centroid is updated at the end of an iteration to reflect the concentration of the surrounding data around it.
 
 It yielded more effective results than supervised mean approximation but was more complicated and complex, leading to less efficiency. Effectively the application would extract features from each key press such as frequency, magnitude etc and then apply this to the K-means implementation such that it can iterate again over the dataset and cluster that value. Clustered values would be associated to keys on the keyboard.
 
+<a name="dev"></a>
+
 ## 9. Development process
 
+<a name="dev_pro"></a>
+
 ### 9.1 Development process methodology
+
+<a name="dev_id"></a>
 
 #### 9.1.1 Iterative design
 
 I partially followed an iterative design approach by adding components of the application piece by piece and building off each version previously. The initial focus was on applying feature extraction to gather reasonable estimations of features from audio, then expanding this to look into working with training and finally analysing.
 
+<a name="dev_vc"></a>
+
 #### 9.1.2 Version control
 
 I utilised version control systems such as git to maintain my project, my first application was developed in February and completely rewritten as it fell short of a structured application, it was more a getting to grips with Android Studio and working with audio sampling. By the beginning of summer I had completely redesigned and created a new application from scratch with followed programming styles and conditions more closely.
+
+<a name="dev_ide"></a>
 
 #### 9.1.3 IDE (Integrated Development Environment)
 
 For the project Android Studio was used to develop and maintain the application while using an emulator for some minor details such as verifying output data whereas for the majority of testing a real phone was attached to the computer and interacted directly with the IDE. Emulation does not cover well with audio sampling and this would train from my actual desktop microphone rather than my smartphones microphone which would lead to poor evaluation of results.
 
+<a name="dev_ps"></a>
+
 ### 9.2 Program Steps
 
 Below is a detailed explanation of the programs functionality listing out the functions utilised and behaviour expected.
+
+* Javadocs can be found **[here](development/code/javadocs/index.html)**
+* Source code can be found **[here](development/code/keylogger2)**.
+
+<a name="dev_is"></a>
 
 #### 9.2.1 Initial Setup
 
@@ -805,6 +923,8 @@ A series of predefined constants are provided in the MainActivity class.
 
 All of the above is designed to provide ease of use and documentation to the application. 
 
+<a name="dev_lau"></a>
+
 ##### 9.2.1.1 Launch
 
 Below is a snippet of code that is called when the application initially starts. 
@@ -848,6 +968,8 @@ As can be seen the progress of what occurs in startup loosely abstracted is:
 * All buttons have been added via the XML activity file will have their associated listeners attached. The IDs present in snippet shown before this subsection are used to manage the varying buttons.
 * Finally a thread is created and spawned from a private internal class for managing the sound sampling and subsampling. 
 
+<a name="dev_guib"></a>
+
 ##### 9.2.1.2 GUI building
 
 The GUI building is handled internally by Androids API but is managed through an internal GUI builder or alternatively an XML activity design file.
@@ -876,6 +998,8 @@ saveButton.doSomething();
 ```
 
 For more information on this application design on the buttons themselves see the **development section - buttons**.
+
+<a name="dev_dl"></a>
 
 #####9.2.1.3 Dataset loading
 
@@ -942,6 +1066,8 @@ Java provides a helpful API for handling all interactions with serializable obje
 public class Foo implements Serializable { ... }
 ```
 
+<a name="dev_te"></a>
+
 ##### 9.2.1.4 Thread establishment
 
 A class called **UpdateProgress** exists to handle threading elements and sound sampling such that application can handle multitasking. Android also provides a method for updating GUI components on the main application thread so that this doesn't throttle the users experience with the application.
@@ -976,6 +1102,8 @@ The last portion of this class aims to provide feedback on the audio noise level
                         }
                     });
 ```
+
+<a name="dev_fe"></a>
 
 #### 9.2.2 Feature Extraction
 
@@ -1028,7 +1156,7 @@ The loop is designed to isolate each peak from the highest amplitude first, then
     }
 ```
 
-
+<a name="dev_fa"></a>
 
 #### 9.2.3 Feature Analysis
 
@@ -1103,15 +1231,21 @@ Each subsample is compiled within an **AmplitudeSample** object which contains d
 
 Each subsample is then parsed into their respective learning models for analysis.
 
+<a name="dev_sul"></a>
+
 #### 9.2.4 Supervised and unsupervised learning
 
 Both forms of learning are handled by the **KeyHandler** class. This class aims to provide an wrapped API for interaction outside the class to both machine learning techniques. The **KeyHandler** is established early on in the application and when instantiated will attempt to load all relevant records of data from both K-means and Mean approximation. They aim to protect the datasets from being tampered with outside of the handler by utilising protected and private methods within the associated classes.
+
+<a name="dev_ma"></a>
 
 ##### 9.2.4.1 Mean approximation
 
 Mean approximation is a primitive self adjusting algorithm for basic interpretation of keystrokes. By being told the key and associated values of that key when training it adjusts a mean value accordingly. It utilises an internal wrapper class called **Average** that provides a very primitive way of averaging data. Mean approximation is the less effective means of transcribing the results given from the key logger but is a very simple design. 
 
 Each key is given it's own object from the class **KeySample**. These objects aim to encapsulate the approximation of the value and allow the handler to to create, model or interact with different datasets depending on the circumstances; each key is saved independently of one another. This allows a trainer to decide whether he wants to remove all data associated to one key, or copy it over to another etc. 
+
+<a name="dev_kc"></a>
 
 ##### 9.2.4.2 K-means clustering
 
@@ -1123,11 +1257,17 @@ Each time a sample is identified it is plotted on a graph and the entire algorit
 
 The **KmeansHandler** handles data in and out of clusters by adding points based on their frequency and magnitude. These are then plotted on a graph and recalculated iteratively to form the new basis for analysis. 
 
+<a name="dev_sr"></a>
+
 #### 9.2.5 Storing results
 
 Results are stored through serialisation as mentioned prior, Kmeans clustering stores all data together as individual clusters are unrecognised and difficult to manage on their own especially when attempting to reintegrate them within an existing dataset. Mean approximation allows for individual data on a key to be saved and will manage them accordingly. In the application terminates all data will be saved, and the option to remotely save at any point is present as well as deleting data. 
 
+<a name="dev_aa"></a>
+
 ### 9.3 Android API
+
+<a name="dev_ap"></a>
 
 #### 9.3.1 API Permissions
 
@@ -1142,6 +1282,8 @@ For example, asking for the permission to **record audio**.
 ```
 
 Must be inserted into this file.
+
+<a name="dev_ar"></a>
 
 #### 9.3.2 AudioRecord
 
@@ -1158,6 +1300,8 @@ Sampling works as such:
 ```
 
 Similar to that of a C method in which a buffer is filled with the data prescribed. The 'minSize' is the same as the sampling frequency such that the array of values given is that of a single second and not any less. As live audio is being recorded there is the possibility of cutting off between seconds and losing valuable data but this is a cost of the mechanism and the potential to rectify this exists by patching samples together but this extends beyond the scope of this project.
+
+<a name="dev_xdl"></a>
 
 #### 9.3.3 XML Design layouts
 
@@ -1180,7 +1324,11 @@ With the bulk of that being generated from AndroidStudio.
 
 The interface design was not a prominent feature in the project as its intention was not for user interaction but for debugging purposes, so long as the user was capable and skilled in the field of this project.
 
+<a name="dev_guif"></a>
+
 ### 9.4 GUI functionality
+
+<a name="dev_b"></a>
 
 #### 9.4.1 Buttons
 
@@ -1202,6 +1350,8 @@ Three other elements exist on the application, a progress bar and some text.
 * The text titled "selected character" tells the user what the current character being trained is.
 * The text below the progress bar reports debug data on the amplitude.
 
+<a name="dev_gui_vis"></a>
+
 #### 9.4.2 Visualising
 
 The design of the application appeared as so:
@@ -1210,7 +1360,11 @@ The design of the application appeared as so:
 
 With the intention of providing useful interaction when sampling and training the data. It's scaled using a relative layout in XML through Android Studio.
 
+<a name="results"></a>
+
 ## 10. Results
+
+<a name="results_init"></a>
 
 ### 10.1 Initial Results
 
@@ -1284,9 +1438,13 @@ This can be seen especially due to the matching algorithm matching the first sam
 
 For all result data regarding primitive amplitude evaluation see [here](results/initial).
 
+<a name="results_fe"></a>
+
 ### 10.2 Using sophisticated feature extraction
 
 By using Sophisticated feature extraction through subsampling I was able to identify two interesting features of each key, the frequency and magnitude of said frequency. This was applied to two different machine learning approaches, one supervised and the other unsupervised. 
+
+<a name="results_ma"></a>
 
 ### 10.3 Mean approximation
 
@@ -1462,6 +1620,8 @@ For all result data regarding Mean Approximation see [here](results/key approx/)
 
 Owing to this lack of accuracy I decided to focus on K-means clustering in an attempt to follow in the previous footsteps of researchers. I initially didn't plan to as the complexity of it was beyond the scope of my knowledge. However as mentioned the accuracy was too low for a fair representation of the outcome of the project.
 
+<a name="results_kc"></a>
+
 ### 10.4 K-means clustering
 
 K-means is a unsupervised machine learning technique to analyse data and trends, often used in marketing and business analytics. Unlike mean approximation where I personally instructed which key was being trained, K-means does not provide this data. Instead data is evaluated and attached to clusters which can be used to identify trends. An initial value 'K' is required for K-means clustering, K-means weighs and organised itself through an iterative design. K is given at the creation of the algorithm and provides the number of clusters, in the case of this application I'm identifying 30 different keys on a keyboard. Each cluster has a centroid that is initially randomly generated and plotted which is then used as a means to relatively control and asses each data point through additional sample data being plotted. Centroids update their position through each iteration adapting the K-means model over iterations.
@@ -1537,7 +1697,9 @@ Although this is a rare occurrence, it still produces problems for classificatio
 
 For all result data regarding K-means clustering see [here](results/kmeans/).
 
-## 10. Conclusion
+<a name="conclusion"></a>
+
+## 11. Conclusion
 
 What can be deciphered from the results here is that K-means can offer a better analysis of the results but lacks the capability to identify pre-recorded audio without the concern of poisoning the training data without a rollback capability that iterates and then reverses the condition of that iteration. Mean approximation while somewhat effective, if expanded upon could provide a more concrete analysis of a advanced subset of keys from the keyboard; in it's current state it lacks the ability to accurately determine keys of large variations. 
 
